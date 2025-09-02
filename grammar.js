@@ -8,7 +8,7 @@
 // @ts-check
 
 module.exports = grammar({
-  name: "oz",
+  name: 'oz',
 
   extras: $ => [
     $.comment, /\s/
@@ -36,20 +36,20 @@ module.exports = grammar({
     ),
 
     skip: $ => choice(
-      "skip",
+      'skip',
       seq(
-        "skip",
-        "Browse",
+        'skip',
+        'Browse',
         $.identifier
       ),
       // NOTE: I don't know what purpose this serves in the langauge
       seq(
-        "skip",
-        "Basic"
+        'skip',
+        'Basic'
       ),
       seq(
-        "skip",
-        "Store"
+        'skip',
+        'Store'
       )
     ),
 
@@ -58,7 +58,7 @@ module.exports = grammar({
       repeat1($.identifier),
       'in',
       $.block,
-      "end"
+      'end'
     ),
 
     assignment: $ => choice(
@@ -68,39 +68,40 @@ module.exports = grammar({
         $._expression
       ),
       prec(0, $.procedure_definition)
+
     ),
 
     if_statement: $ => choice(
       seq(
-        "if",
+        'if',
         $._expression,
-        "then",
+        'then',
         $.block,
         choice(
           seq(
-            "else",
+            'else',
             $.block,
-            "end"
+            'end'
           ),
-          "end"
+          'end'
         )
       )
     ),
 
     case_statement: $ => seq(
-      "case",
+      'case',
       $.identifier,
-      "of",
+      'of',
       // TODO: something here
-      "then",
+      'then',
       $.block,
-      "else",
+      'else',
       $.block,
-      "end"
+      'end'
     ),
 
     procedure_application: $ => seq(
-      "{",
+      '{',
       $.identifier,
       repeat1(
         choice(
@@ -108,58 +109,120 @@ module.exports = grammar({
           $._type
         )
       ),
-      "}"
+      '}'
     ),
 
     _expression: $ => choice(
       prec(1, $.procedure_definition),
       $._type,
       $.identifier,
+      $.equal,
+      $.not_equal,
+      $.less_equal,
+      $.less,
+      $.greater_equal,
+      $.greater,
       $.add,
       $.subtract,
       $.multiply,
       $.divide,
-      $.negate
-      // TODO: other kinds of expressions
+      $.div,
+      $.mod,
+      $.negate,
+      $.field_selection
       // TODO: make sure precedences and associativities of rules matches the interpreter
     ),
 
     procedure_definition: $ => seq(
-      "proc",
-      "{",
-      choice($.identifier, "$"),
+      'proc',
+      '{',
+      choice($.identifier, '$'),
       repeat($.identifier),
-      "}",
+      '}',
       $.block,
-      "end"
+      'end'
     ),
 
-    add: $ => prec.left(0, seq(
+    equal: $ => prec.left(0, seq(
+      $._expression,
+      '==',
+      $._expression
+    )),
+
+    not_equal: $ => prec.left(0, seq(
+      $._expression,
+      '\\=',
+      $._expression
+    )),
+
+    less_equal: $ => prec.left(0, seq(
+      $._expression,
+      '=<',
+      $._expression
+    )),
+
+    less: $ => prec.left(0, seq(
+      $._expression,
+      '<',
+      $._expression
+    )),
+
+    greater_equal: $ => prec.left(0, seq(
+      $._expression,
+      '>=',
+      $._expression
+    )),
+
+    greater: $ => prec.left(0, seq(
+      $._expression,
+      '>',
+      $._expression
+    )),
+
+    add: $ => prec.left(1, seq(
       $._expression,
       '+',
       $._expression
     )),
 
-    subtract: $ => prec.left(0, seq(
+    subtract: $ => prec.left(1, seq(
       $._expression,
       '-',
       $._expression
     )),
 
-    multiply: $ => prec.left(1, seq(
+    multiply: $ => prec.left(2, seq(
       $._expression,
       '*',
       $._expression
     )),
 
-    divide: $ => prec.left(1, seq(
+    divide: $ => prec.left(2, seq(
       $._expression,
       '/',
       $._expression
     )),
 
-    negate: $ => prec.left(2, seq(
+    div: $ => prec.left(2, seq(
+      $._expression,
+      'div',
+      $._expression
+    )),
+
+    mod: $ => prec.left(2, seq(
+      $._expression,
+      'mod',
+      $._expression
+    )),
+
+    negate: $ => prec.left(3, seq(
       '-',
+      $._expression
+    )),
+
+    field_selection: $ => prec.left(3, seq(
+      $._expression,
+      '.',
       $._expression
     )),
 
@@ -177,7 +240,7 @@ module.exports = grammar({
 
     record: $ => seq(
       $._literal,
-      "(",
+      '(',
       repeat1(
         seq(
           choice(
@@ -186,20 +249,20 @@ module.exports = grammar({
             // NOTE: this should be ints only, but right now we do not distinguish between ints and floats
             $.number
           ),
-          ":",
+          ':',
           $.identifier
         )
       ),
-      ")"
+      ')'
     ),
 
     tuple: $ => seq(
       $._literal,
-      "(",
+      '(',
       repeat1(
         $.identifier
       ),
-      ")"
+      ')'
     ),
 
     // TODO: make sure this is actually how Oz lists work
@@ -208,7 +271,7 @@ module.exports = grammar({
     list: $ => prec.left(repeat1(
       seq(
         $.identifier,
-        "|",
+        '|',
         $.identifier
       )
     )),
@@ -217,9 +280,9 @@ module.exports = grammar({
     number: $ => /\d+|\d+\.\d*/,
 
     string: $ => seq(
-      "\"",
+      '\"',
       /[^"]*/,
-      "\""
+      '\"'
     ),
 
     _literal: $ => choice(
