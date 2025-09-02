@@ -48,3 +48,4 @@ zig-out/
 
 # testing stuff
 example-files
+test_files

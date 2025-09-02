@@ -10,6 +10,10 @@
 module.exports = grammar({
   name: "oz",
 
+  extras: $ => [
+    $.comment, /\s/
+  ],
+
   rules: {
     source_file: $ => repeat($._definition),
 
@@ -31,7 +35,23 @@ module.exports = grammar({
       // TODO: other kinds of statements (e.g., if, etc)
     ),
 
-    skip: $ => "skip",
+    skip: $ => choice(
+      "skip",
+      seq(
+        "skip",
+        "Browse",
+        $.identifier
+      ),
+      // NOTE: I don't know what purpose this serves in the langauge
+      seq(
+        "skip",
+        "Basic"
+      ),
+      seq(
+        "skip",
+        "Store"
+      )
+    ),
 
     local_definition: $ => seq(
       'local',
@@ -81,7 +101,13 @@ module.exports = grammar({
 
     procedure_application: $ => seq(
       "{",
-      repeat1($.identifier),
+      $.identifier,
+      repeat1(
+        choice(
+          $.identifier,
+          $._type
+        )
+      ),
       "}"
     ),
 
@@ -176,6 +202,18 @@ module.exports = grammar({
       ")"
     ),
 
+    // TODO: make sure this is actually how Oz lists work
+    // also it might be done differently in Hoz than from the book
+    // also also make sure associativity is correct
+    list: $ => prec.left(repeat1(
+      seq(
+        $.identifier,
+        "|",
+        $.identifier
+      )
+    )),
+
+
     number: $ => /\d+|\d+\.\d*/,
 
     string: $ => seq(
@@ -191,6 +229,8 @@ module.exports = grammar({
 
     bool: $ => /true|false/,
 
-    atom: $ => /([a-z]+\w*)|'.+'/
+    atom: $ => /([a-z]+\w*)|'.+'/,
+
+    comment: $ => token(seq('//', /[^\r\n]*/))
   }
 });
