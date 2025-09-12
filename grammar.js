@@ -7,6 +7,8 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+// TODO: Implement "practucal language" features
+
 module.exports = grammar({
   name: 'oz',
 
@@ -17,23 +19,22 @@ module.exports = grammar({
   rules: {
     source_file: $ => repeat($._definition),
 
-    _definition: $ => prec.left(0, choice(
-      repeat1($._statement)
+    _definition: $ => $.block,
+
+    block: $ => prec.left(1, seq(
+      repeat1($._statement),
     )),
 
-    block: $ => seq(
-      repeat1($._statement),
-    ),
-
-    _statement: $ => choice(
+    _statement: $ => prec(1, choice(
       $.skip,
       $.local_definition,
       $.assignment,
       $.if_statement,
       $.case_statement,
-      $.procedure_application
-      // TODO: other kinds of statements (e.g., if, etc)
-    ),
+      $.procedure_definition_statement,
+      $.function_definition_statement,
+      $.call
+    )),
 
     skip: $ => choice(
       'skip',
@@ -55,176 +56,247 @@ module.exports = grammar({
 
     local_definition: $ => seq(
       'local',
-      repeat1($.identifier),
-      'in',
-      $.block,
+      $.in,
+      optional($.block),
       'end'
+    ),
+
+    in: $ => seq(
+      repeat1(
+        choice(
+          $.identifier,
+          $.assignment
+        ),
+      ),
+      'in'
     ),
 
     assignment: $ => choice(
       seq(
-        $.identifier,
+        field('left', $.identifier),
         '=',
-        $._expression
+        field('right', $._expression)
       ),
-      prec(0, $.procedure_definition)
+      $.procedure_definition_expression
+    ),
 
+    in_block: $ => seq(
+      optional($.in),
+      $.block
     ),
 
     if_statement: $ => choice(
       seq(
         'if',
-        $._expression,
+        field("condition", $._expression),
         'then',
-        $.block,
+        field("consequence", $.in_block),
+        repeat(field("alternative", $.elseif_clause)),
         choice(
-          seq(
-            'else',
-            $.block,
-            'end'
-          ),
+          field("alternative", $.else_clause),
+          'end'
+        )
+      )),
+
+    elseif_clause: $ => seq(
+      'elseif',
+      field("condition", $._expression),
+      'then',
+      field("consequence", $.in_block)
+    ),
+
+    else_clause: $ => seq(
+      'else',
+      field("body", $.in_block),
+      'end'
+    ),
+
+    case_statement: $ => seq(
+      'case',
+      field('condition', $._expression),
+      'of',
+      field('pattern', $._expression),
+      'then',
+      field('body', $.in_block),
+      repeat(field('alternative', $.case_alternate)),
+      field('alternative', $.else_clause)
+    ),
+
+    case_alternate: $ => seq(
+      "[]",
+      field('pattern', $._expression),
+      "then",
+      field('body', $.in_block)
+    ),
+
+    procedure_definition_statement: $ => seq(
+      'proc',
+      '{',
+      field("name", $.identifier),
+      field("parameters", repeat($.identifier)),
+      '}',
+      field("body", $.block),
+      'end'
+    ),
+
+    function_definition_statement: $ => seq(
+      'fun',
+      '{',
+      field('name', $.identifier),
+      field('parameters', repeat($.identifier)),
+      '}',
+      field('body', $.in_expression),
+      'end'
+    ),
+
+    call: $ => seq(
+      '{',
+      field("function", $.identifier),
+      optional(field("arguments", $.argument_list)),
+      '}'
+    ),
+
+    argument_list: $ => repeat1(
+      choice(
+        $.identifier,
+        $._type
+      )
+    ),
+
+
+    in_expression: $ => seq(
+      optional($.in),
+      repeat($._statement),
+      field("return", choice($._expression, $._statement_expression))
+    ),
+
+    _expression: $ => choice(
+      prec(1, $.procedure_definition_expression),
+      prec(1, $.function_definition_expression),
+      $.parenthesis,
+      $.binary_operator,
+      $.unary_operator,
+      // functions are allowed and function calls look the same as procedure applications
+      $.call,
+
+      $.identifier,
+      $._type,
+      // TODO: make sure precedences and associativities of rules matches the interpreter
+    ),
+
+    // expression versions of statements for functions
+    _statement_expression: $ => choice(
+      $.local_definition_expression,
+      $.if_expression,
+      $.case_expression,
+    ),
+
+    parenthesis: $ => prec.left(0, seq(
+      '(',
+      $._expression,
+      ')'
+    )),
+
+
+    procedure_definition_expression: $ => seq(
+      'proc',
+      '{',
+      '$',
+      field("parameters", repeat($.identifier)),
+      '}',
+      field("body", $.block),
+      'end'
+    ),
+
+    function_definition_expression: $ => seq(
+      'fun',
+      '{',
+      '$',
+      field("parameters", repeat($.identifier)),
+      '}',
+      field("body", $.in_expression),
+      'end'
+    ),
+
+    binary_operator: $ => prec.left(2, seq(
+      field('left', $._expression),
+      choice(
+        '==',
+        '\\=',
+        '=<',
+        '<',
+        '>=',
+        '>',
+        '+',
+        '-',
+        '*',
+        '/',
+        'div',
+        'mod',
+        '.',
+        '#', // tuple
+        '|' // list
+      ),
+      field('right', $._expression)
+    )),
+
+    unary_operator: $ => prec.left(1, seq(
+      '-',
+      $._expression
+    )),
+
+    local_definition_expression: $ => seq(
+      'local',
+      $.in_expression,
+      'end'
+    ),
+
+    if_expression: $ => choice(
+      seq(
+        'if',
+        field("condition", $._expression),
+        'then',
+        field("consequence", $.in_expression),
+        repeat(field('alternative', $.elseif_expression_clause)),
+        choice(
+          field('alternative', $.else_expression_clause),
           'end'
         )
       )
     ),
 
-    case_statement: $ => seq(
-      'case',
-      $.identifier,
-      'of',
-      // TODO: something here
+    elseif_expression_clause: $ => seq(
+      'elseif',
+      field('condition', $._expression),
       'then',
-      $.block,
+      field('body', $.in_expression)
+    ),
+
+    else_expression_clause: $ => seq(
       'else',
-      $.block,
+      optional($.in_expression),
       'end'
     ),
 
-    procedure_application: $ => seq(
-      '{',
-      $.identifier,
-      repeat1(
-        choice(
-          $.identifier,
-          $._type
-        )
-      ),
-      '}'
+    case_expression: $ => seq(
+      'case',
+      field('condition', $._expression),
+      'of',
+      field('pattern', $._expression),
+      'then',
+      field('body', $.in_expression),
+      repeat(field('alternative', $.case_expression_alternate)),
+      field('alternative', $.else_expression_clause)
     ),
 
-    _expression: $ => choice(
-      prec(1, $.procedure_definition),
-      $._type,
-      $.identifier,
-      $.equal,
-      $.not_equal,
-      $.less_equal,
-      $.less,
-      $.greater_equal,
-      $.greater,
-      $.add,
-      $.subtract,
-      $.multiply,
-      $.divide,
-      $.div,
-      $.mod,
-      $.negate,
-      $.field_selection
-      // TODO: make sure precedences and associativities of rules matches the interpreter
+    case_expression_alternate: $ => seq(
+      "[]",
+      field('pattern', $._expression),
+      "then",
+      field('body', $.in_expression)
     ),
 
-    procedure_definition: $ => seq(
-      'proc',
-      '{',
-      choice($.identifier, '$'),
-      repeat($.identifier),
-      '}',
-      $.block,
-      'end'
-    ),
 
-    equal: $ => prec.left(0, seq(
-      $._expression,
-      '==',
-      $._expression
-    )),
-
-    not_equal: $ => prec.left(0, seq(
-      $._expression,
-      '\\=',
-      $._expression
-    )),
-
-    less_equal: $ => prec.left(0, seq(
-      $._expression,
-      '=<',
-      $._expression
-    )),
-
-    less: $ => prec.left(0, seq(
-      $._expression,
-      '<',
-      $._expression
-    )),
-
-    greater_equal: $ => prec.left(0, seq(
-      $._expression,
-      '>=',
-      $._expression
-    )),
-
-    greater: $ => prec.left(0, seq(
-      $._expression,
-      '>',
-      $._expression
-    )),
-
-    add: $ => prec.left(1, seq(
-      $._expression,
-      '+',
-      $._expression
-    )),
-
-    subtract: $ => prec.left(1, seq(
-      $._expression,
-      '-',
-      $._expression
-    )),
-
-    multiply: $ => prec.left(2, seq(
-      $._expression,
-      '*',
-      $._expression
-    )),
-
-    divide: $ => prec.left(2, seq(
-      $._expression,
-      '/',
-      $._expression
-    )),
-
-    div: $ => prec.left(2, seq(
-      $._expression,
-      'div',
-      $._expression
-    )),
-
-    mod: $ => prec.left(2, seq(
-      $._expression,
-      'mod',
-      $._expression
-    )),
-
-    negate: $ => prec.left(3, seq(
-      '-',
-      $._expression
-    )),
-
-    field_selection: $ => prec.left(3, seq(
-      $._expression,
-      '.',
-      $._expression
-    )),
 
     // first letter of identifier must be uppercase
     identifier: $ => /[A-Z]([A-Z]|[a-z]|[0-9]|_)*/,
@@ -232,52 +304,45 @@ module.exports = grammar({
     _type: $ => choice(
       $.record,
       $.tuple,
-      $.list,
-      $.number,
+      $._number,
       $.string,
       $._literal
     ),
 
-    record: $ => seq(
+    record: $ => prec(0, seq(
       $._literal,
       '(',
-      repeat1(
-        seq(
-          choice(
-            $.atom,
-            $.bool,
-            // NOTE: this should be ints only, but right now we do not distinguish between ints and floats
-            $.number
-          ),
-          ':',
-          $.identifier
-        )
-      ),
-      ')'
-    ),
-
-    tuple: $ => seq(
-      $._literal,
-      '(',
-      repeat1(
-        $.identifier
-      ),
-      ')'
-    ),
-
-    // TODO: make sure this is actually how Oz lists work
-    // also it might be done differently in Hoz than from the book
-    // also also make sure associativity is correct
-    list: $ => prec.left(repeat1(
-      seq(
+      repeat1(seq(
+        choice(
+          $.atom,
+          $.bool,
+          // NOTE: this should be ints only, but right now we do not distinguish between ints and floats
+          $._number
+        ),
+        ':',
+        // NOTE: we should be allowed to use other values here, but hoz might not support it
         $.identifier,
-        '|',
-        $.identifier
-      )
+      )),
+      ')'
     )),
 
+    tuple: $ => prec(1, seq(
+      $._literal,
+      '(',
+      repeat1(
+        $.identifier
+      ),
+      ')'
+    )),
 
-    number: $ => /\d+|\d+\.\d*/,
+    _number: $ => choice(
+      $.int,
+      $.float
+    ),
+
+    int: $ => /\d+/,
+
+    float: $ => /\d+\.\d*/,
 
     string: $ => seq(
       '\"',
@@ -285,14 +350,14 @@ module.exports = grammar({
       '\"'
     ),
 
-    _literal: $ => choice(
+    _literal: $ => prec(2, choice(
       $.bool,
       $.atom
-    ),
+    )),
 
     bool: $ => /true|false/,
 
-    atom: $ => /([a-z]+\w*)|'.+'/,
+    atom: $ => /([a-z]+\w*)|`.+`/,
 
     comment: $ => token(seq('//', /[^\r\n]*/))
   }
