@@ -71,48 +71,31 @@
       }
     },
     "skip": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "STRING",
           "value": "skip"
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "skip"
-            },
-            {
-              "type": "STRING",
-              "value": "Browse"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "skip"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "Browse"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "identifier"
+                }
+              ]
             },
             {
               "type": "STRING",
               "value": "Basic"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "skip"
             },
             {
               "type": "STRING",

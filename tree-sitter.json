@@ -10,7 +10,8 @@
         "oz"
       ],
       "injection-regex": "^oz$",
-      "class-name": "TreeSitterOz"
+      "class-name": "TreeSitterOz",
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {
@@ -25,7 +26,8 @@
     ],
     "links": {
       "repository": "https://github.com/scrmbld/tree-sitter-oz"
-    }
+    },
+    "highlights": "queries/highlights.scm"
   },
   "bindings": {
     "c": true,

@@ -36,20 +36,11 @@ module.exports = grammar({
       $.call
     )),
 
-    skip: $ => choice(
+    skip: $ => seq(
       'skip',
-      seq(
-        'skip',
-        'Browse',
-        $.identifier
-      ),
-      // NOTE: I don't know what purpose this serves in the langauge
-      seq(
-        'skip',
-        'Basic'
-      ),
-      seq(
-        'skip',
+      choice(
+        seq('Browse', $.identifier),
+        'Basic',
         'Store'
       )
     ),
