@@ -10,7 +10,7 @@
 // TODO: Implement "practucal language" features
 
 module.exports = grammar({
-  name: 'oz',
+  name: "oz",
 
   extras: $ => [
     $.comment, /\s/
@@ -37,19 +37,19 @@ module.exports = grammar({
     )),
 
     skip: $ => seq(
-      'skip',
+      "skip",
       choice(
-        seq('Browse', $.identifier),
-        'Basic',
-        'Store'
+        seq("Browse", $.identifier),
+        "Basic",
+        "Store"
       )
     ),
 
     local_definition: $ => seq(
-      'local',
+      "local",
       $.in,
       optional($.block),
-      'end'
+      "end"
     ),
 
     in: $ => seq(
@@ -59,14 +59,14 @@ module.exports = grammar({
           $.assignment
         ),
       ),
-      'in'
+      "in"
     ),
 
     assignment: $ => choice(
       seq(
-        field('left', $.identifier),
-        '=',
-        field('right', $._expression)
+        field("left", $.identifier),
+        "=",
+        field("right", $._expression)
       ),
       $.procedure_definition_expression
     ),
@@ -78,73 +78,73 @@ module.exports = grammar({
 
     if_statement: $ => choice(
       seq(
-        'if',
+        "if",
         field("condition", $._expression),
-        'then',
+        "then",
         field("consequence", $.in_block),
         repeat(field("alternative", $.elseif_clause)),
         choice(
           field("alternative", $.else_clause),
-          'end'
+          "end"
         )
       )),
 
     elseif_clause: $ => seq(
-      'elseif',
+      "elseif",
       field("condition", $._expression),
-      'then',
+      "then",
       field("consequence", $.in_block)
     ),
 
     else_clause: $ => seq(
-      'else',
+      "else",
       field("body", $.in_block),
-      'end'
+      "end"
     ),
 
     case_statement: $ => seq(
-      'case',
-      field('condition', $._expression),
-      'of',
-      field('pattern', $._expression),
-      'then',
-      field('body', $.in_block),
-      repeat(field('alternative', $.case_alternate)),
-      field('alternative', $.else_clause)
+      "case",
+      field("condition", $._expression),
+      "of",
+      field("pattern", $._expression),
+      "then",
+      field("body", $.in_block),
+      repeat(field("alternative", $.case_alternate)),
+      field("alternative", $.else_clause)
     ),
 
     case_alternate: $ => seq(
       "[]",
-      field('pattern', $._expression),
+      field("pattern", $._expression),
       "then",
-      field('body', $.in_block)
+      field("body", $.in_block)
     ),
 
     procedure_definition_statement: $ => seq(
-      'proc',
-      '{',
+      "proc",
+      "{",
       field("name", $.identifier),
       field("parameters", repeat($.identifier)),
-      '}',
+      "}",
       field("body", $.block),
-      'end'
+      "end"
     ),
 
     function_definition_statement: $ => seq(
-      'fun',
-      '{',
-      field('name', $.identifier),
-      field('parameters', repeat($.identifier)),
-      '}',
-      field('body', $.in_expression),
-      'end'
+      "fun",
+      "{",
+      field("name", $.identifier),
+      field("parameters", repeat($.identifier)),
+      "}",
+      field("body", $.in_expression),
+      "end"
     ),
 
     call: $ => seq(
-      '{',
+      "{",
       field("function", $.identifier),
       optional(field("arguments", $.argument_list)),
-      '}'
+      "}"
     ),
 
     argument_list: $ => repeat1(
@@ -183,108 +183,108 @@ module.exports = grammar({
     ),
 
     parenthesis: $ => prec.left(0, seq(
-      '(',
+      "(",
       $._expression,
-      ')'
+      ")"
     )),
 
 
     procedure_definition_expression: $ => seq(
-      'proc',
-      '{',
-      '$',
+      "proc",
+      "{",
+      "$",
       field("parameters", repeat($.identifier)),
-      '}',
+      "}",
       field("body", $.block),
-      'end'
+      "end"
     ),
 
     function_definition_expression: $ => seq(
-      'fun',
-      '{',
-      '$',
+      "fun",
+      "{",
+      "$",
       field("parameters", repeat($.identifier)),
-      '}',
+      "}",
       field("body", $.in_expression),
-      'end'
+      "end"
     ),
 
     binary_operator: $ => prec.left(2, seq(
-      field('left', $._expression),
+      field("left", $._expression),
       choice(
-        '==',
-        '\\=',
-        '=<',
-        '<',
-        '>=',
-        '>',
-        '+',
-        '-',
-        '*',
-        '/',
-        'div',
-        'mod',
-        '.',
-        '#', // tuple
-        '|' // list
+        "==",
+        "\\=",
+        "=<",
+        "<",
+        ">=",
+        ">",
+        "+",
+        "-",
+        "*",
+        "/",
+        "div",
+        "mod",
+        ".",
+        "#", // tuple
+        "|" // list
       ),
-      field('right', $._expression)
+      field("right", $._expression)
     )),
 
     unary_operator: $ => prec.left(1, seq(
-      '-',
+      "-",
       $._expression
     )),
 
     local_definition_expression: $ => seq(
-      'local',
+      "local",
       $.in_expression,
-      'end'
+      "end"
     ),
 
     if_expression: $ => choice(
       seq(
-        'if',
+        "if",
         field("condition", $._expression),
-        'then',
+        "then",
         field("consequence", $.in_expression),
-        repeat(field('alternative', $.elseif_expression_clause)),
+        repeat(field("alternative", $.elseif_expression_clause)),
         choice(
-          field('alternative', $.else_expression_clause),
-          'end'
+          field("alternative", $.else_expression_clause),
+          "end"
         )
       )
     ),
 
     elseif_expression_clause: $ => seq(
-      'elseif',
-      field('condition', $._expression),
-      'then',
-      field('body', $.in_expression)
+      "elseif",
+      field("condition", $._expression),
+      "then",
+      field("body", $.in_expression)
     ),
 
     else_expression_clause: $ => seq(
-      'else',
+      "else",
       optional($.in_expression),
-      'end'
+      "end"
     ),
 
     case_expression: $ => seq(
-      'case',
-      field('condition', $._expression),
-      'of',
-      field('pattern', $._expression),
-      'then',
-      field('body', $.in_expression),
-      repeat(field('alternative', $.case_expression_alternate)),
-      field('alternative', $.else_expression_clause)
+      "case",
+      field("condition", $._expression),
+      "of",
+      field("pattern", $._expression),
+      "then",
+      field("body", $.in_expression),
+      repeat(field("alternative", $.case_expression_alternate)),
+      field("alternative", $.else_expression_clause)
     ),
 
     case_expression_alternate: $ => seq(
       "[]",
-      field('pattern', $._expression),
+      field("pattern", $._expression),
       "then",
-      field('body', $.in_expression)
+      field("body", $.in_expression)
     ),
 
 
@@ -302,7 +302,7 @@ module.exports = grammar({
 
     record: $ => prec(0, seq(
       $._literal,
-      '(',
+      "(",
       repeat1(seq(
         choice(
           $.atom,
@@ -310,20 +310,20 @@ module.exports = grammar({
           // NOTE: this should be ints only, but right now we do not distinguish between ints and floats
           $._number
         ),
-        ':',
+        ":",
         // NOTE: we should be allowed to use other values here, but hoz might not support it
         $.identifier,
       )),
-      ')'
+      ")"
     )),
 
     tuple: $ => prec(1, seq(
       $._literal,
-      '(',
+      "(",
       repeat1(
         $.identifier
       ),
-      ')'
+      ")"
     )),
 
     _number: $ => choice(
@@ -336,9 +336,9 @@ module.exports = grammar({
     float: $ => /\d+\.\d*/,
 
     string: $ => seq(
-      '\"',
+      "\"",
       /[^"]*/,
-      '\"'
+      "\""
     ),
 
     _literal: $ => prec(2, choice(
@@ -346,10 +346,10 @@ module.exports = grammar({
       $.atom
     )),
 
-    bool: $ => /true|false/,
+    bool: $ => choice("true", "false"),
 
-    atom: $ => /([a-z]+\w*)|`.+`/,
+    atom: $ => /([a-z]+\w*)|\`.+\`/,
 
-    comment: $ => token(seq('//', /[^\r\n]*/))
+    comment: $ => token(seq("//", /[^\r\n]*/))
   }
 });

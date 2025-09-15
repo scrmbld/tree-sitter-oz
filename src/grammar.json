@@ -1272,12 +1272,21 @@
       }
     },
     "bool": {
-      "type": "PATTERN",
-      "value": "true|false"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "true"
+        },
+        {
+          "type": "STRING",
+          "value": "false"
+        }
+      ]
     },
     "atom": {
       "type": "PATTERN",
-      "value": "([a-z]+\\w*)|`.+`"
+      "value": "([a-z]+\\w*)|\\`.+\\`"
     },
     "comment": {
       "type": "TOKEN",

@@ -1,9 +1,14 @@
 ; identifiers
-(identifier) @identifier
+(identifier) @variable
 
 ; calls
 (call
   function: (identifier) @function)
+
+(call
+     arguments: (argument_list
+                  (identifier) @variable.parameter)
+     )
 
 (skip) @function
 
@@ -28,6 +33,11 @@
  (int)
  (float)
  ] @number
+
+[
+ "true"
+ "false"
+ ] @boolean
 
 (string) @string
 
