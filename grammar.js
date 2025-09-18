@@ -39,9 +39,12 @@ module.exports = grammar({
     skip: $ => seq(
       "skip",
       choice(
-        seq("Browse", $.identifier),
+        seq("Browse", field("argument", $.identifier)),
         "Basic",
-        "Store"
+        "Stack",
+        "Store",
+        "Full",
+        "Check"
       )
     ),
 
@@ -64,7 +67,11 @@ module.exports = grammar({
 
     assignment: $ => choice(
       seq(
-        field("left", $.identifier),
+        choice(
+          field("left", $.identifier),
+          field("left", $.record),
+          field("left", $.tuple)
+        ),
         "=",
         field("right", $._expression)
       ),
@@ -307,12 +314,10 @@ module.exports = grammar({
         choice(
           $.atom,
           $.bool,
-          // NOTE: this should be ints only, but right now we do not distinguish between ints and floats
-          $._number
+          $.int
         ),
         ":",
-        // NOTE: we should be allowed to use other values here, but hoz might not support it
-        $.identifier,
+        $._expression
       )),
       ")"
     )),
@@ -348,7 +353,7 @@ module.exports = grammar({
 
     bool: $ => choice("true", "false"),
 
-    atom: $ => /([a-z]+\w*)|\`.+\`/,
+    atom: $ => /([a-z]+\w*(\(\))?)|\`.+\`|'.+'/,
 
     comment: $ => token(seq("//", /[^\r\n]*/))
   }

@@ -53,6 +53,14 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "record",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
           }
         ]
       },
@@ -1567,11 +1575,23 @@
           "named": true
         },
         {
+          "type": "binary_operator",
+          "named": true
+        },
+        {
           "type": "bool",
           "named": true
         },
         {
+          "type": "call",
+          "named": true
+        },
+        {
           "type": "float",
+          "named": true
+        },
+        {
+          "type": "function_definition_expression",
           "named": true
         },
         {
@@ -1581,6 +1601,30 @@
         {
           "type": "int",
           "named": true
+        },
+        {
+          "type": "parenthesis",
+          "named": true
+        },
+        {
+          "type": "procedure_definition_expression",
+          "named": true
+        },
+        {
+          "type": "record",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "unary_operator",
+          "named": true
         }
       ]
     }
@@ -1588,16 +1632,17 @@
   {
     "type": "skip",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        }
-      ]
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1785,6 +1830,18 @@
   },
   {
     "type": "Browse",
+    "named": false
+  },
+  {
+    "type": "Check",
+    "named": false
+  },
+  {
+    "type": "Full",
+    "named": false
+  },
+  {
+    "type": "Stack",
     "named": false
   },
   {

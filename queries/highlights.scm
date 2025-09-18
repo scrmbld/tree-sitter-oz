@@ -10,22 +10,18 @@
                   (identifier) @variable.parameter)
      )
 
-(skip) @function
+(skip
+  [
+   "Browse"
+   "Basic"
+   "Full"
+   "Store"
+   "Stack"
+   "Check"
+   ] @function)
 
-; Keyworkds
-[
- "local"
- "in"
- "end"
- "if"
- "then"
- "elseif"
- "else"
- "case"
- "proc"
- "fun"
- "skip"
- ] @keyword
+(skip
+  argument: (identifier) @variable.parameter)
 
 ; Literals
 
@@ -41,4 +37,22 @@
 
 (string) @string
 
+(atom) @string.special
+
 (comment) @comment
+
+; Keywords
+[
+ "local"
+ "in"
+ "end"
+ "if"
+ "then"
+ "elseif"
+ "else"
+ "case"
+ "of"
+ "proc"
+ "fun"
+ "skip"
+ ] @keyword
