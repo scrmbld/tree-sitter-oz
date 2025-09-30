@@ -1,6 +1,6 @@
 # tree-sitter-oz
 
-A treesitter grammar for the Oz programming language. Specifically, this grammar is meant to work the the hoz interpreter, as well as the official Oz implementation.
+A treesitter grammar for the Oz programming language. Specifically, this grammar is meant to work the the hoz interpreter, as well as code for the official Oz implementation.
 
 At the moment, tree-sitter-oz only provides syntax highlighting. It is mature enough to be useful for that purpose, but is still in early phases.
 
@@ -26,18 +26,18 @@ vim.filetype.add({
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 -- create a new configuration for oz
 parser_config.oz = {
-	highlight = { enable = true },
-	indent = { enable = false },
-	install_info = {
-        -- location of the parser project -- can be git repo or local path
-		url = "~/parsers/tree-sitter-oz/", -- wherever you put the download
-        -- url = "git@github.com:scrmbld/tree-sitter-oz.git",
-		files = { "src/parser.c" },
-        -- select default branch
-		branch = "main",
-	},
+    highlight = { enable = true },
+    indent = { enable = false },
+    install_info = {
+	-- location of the parser project -- can be git repo or local path
+	url = "~/parsers/tree-sitter-oz/", -- wherever you put the download of the repository
+	-- url = "git@github.com:scrmbld/tree-sitter-oz.git",
+	files = { "src/parser.c" },
+	-- select default branch
+	branch = "main",
+    },
     -- which filetype(s) the parser should run on
-	filetype = "oz",
+    filetype = "oz",
 }
 ```
 

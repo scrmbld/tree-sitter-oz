@@ -33,7 +33,8 @@ module.exports = grammar({
       $.case_statement,
       $.procedure_definition_statement,
       $.function_definition_statement,
-      $.call
+      $.call,
+      $.thread
     )),
 
     skip: $ => seq(
@@ -50,8 +51,8 @@ module.exports = grammar({
 
     local_definition: $ => seq(
       "local",
-      $.in,
-      optional($.block),
+      field("definitions", $.in),
+      optional(field("body", $.block)),
       "end"
     ),
 
@@ -161,6 +162,11 @@ module.exports = grammar({
       )
     ),
 
+    thread: $ => seq(
+      "thread",
+      $.block,
+      "end"
+    ),
 
     in_expression: $ => seq(
       optional($.in),
@@ -355,6 +361,14 @@ module.exports = grammar({
 
     atom: $ => /([a-z]+\w*(\(\))?)|\`.+\`|'.+'/,
 
-    comment: $ => token(seq("//", /[^\r\n]*/))
+    // https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+    comment: $ => token(choice(
+      seq('//', /(\\+(.|\r?\n)|[^\\\n])*/),
+      seq(
+        '/*',
+        /[^*]*\*+([^/*][^*]*\*+)*/,
+        '/',
+      ),
+    ))
   }
 });

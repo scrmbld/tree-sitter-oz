@@ -307,6 +307,10 @@
         {
           "type": "skip",
           "named": true
+        },
+        {
+          "type": "thread",
+          "named": true
         }
       ]
     }
@@ -1395,6 +1399,10 @@
         {
           "type": "skip",
           "named": true
+        },
+        {
+          "type": "thread",
+          "named": true
         }
       ]
     }
@@ -1402,20 +1410,27 @@
   {
     "type": "local_definition",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "in",
-          "named": true
-        }
-      ]
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "block",
+            "named": true
+          }
+        ]
+      },
+      "definitions": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "in",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1665,6 +1680,21 @@
     "type": "string",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "thread",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "tuple",
@@ -1935,6 +1965,10 @@
   },
   {
     "type": "then",
+    "named": false
+  },
+  {
+    "type": "thread",
     "named": false
   },
   {

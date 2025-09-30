@@ -46,13 +46,20 @@
  "local"
  "in"
  "end"
+ "skip"
+ "thread"
+ ] @keyword
+
+[
  "if"
- "then"
- "elseif"
  "else"
+ "elseif"
  "case"
  "of"
+ "then"
+ ] @keyword.conditional
+
+[
  "proc"
  "fun"
- "skip"
- ] @keyword
+ ] @keyword.function
