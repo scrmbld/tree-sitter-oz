@@ -1,0 +1,234 @@
+====
+skip statement
+====
+
+skip Basic
+skip Stack
+skip Store
+skip Full
+skip Check
+
+---
+
+(source_file
+  (block
+    (skip)
+    (skip)
+    (skip)
+    (skip)
+    (skip)
+  )
+)
+
+=====
+local statement
+=====
+
+local X in
+  skip Browse X
+end
+
+---
+(source_file
+  (block
+    (local_definition
+      definitions: (in
+        (identifier))
+      body: (block
+        (skip
+          argument: (identifier))))))
+
+===
+assignment
+===
+
+X = 1
+Z = Y
+tree(left:A right:B) = T
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (int))
+    (assignment
+      left: (identifier)
+      right: (identifier))
+    (assignment
+      left: (record
+        label: (atom)
+        field: (record_field
+          name: (atom)
+          value: (identifier))
+        field: (record_field
+          name: (atom)
+          value: (identifier)))
+
+      right: (identifier))))
+
+===
+if statement
+===
+
+if A then Y=1 in
+  skip Browse X
+elseif B then
+  skip Basic
+else
+  skip Basic
+end
+
+---
+
+(source_file
+  (block
+    (if_statement
+      condition: (identifier)
+      consequence: (in_block
+        (in
+          (assignment
+            left: (identifier)
+            right: (int)))
+        (block
+          (skip
+            argument: (identifier))))
+      alternative: (elseif_clause
+        condition: (identifier)
+        consequence: (in_block
+          (block
+            (skip))))
+      alternative: (else_clause
+        consequence: (in_block
+          (block
+            (skip)))))))
+
+===
+case statement
+===
+
+case T of tree(left:A right:B) then
+  skip Browse A
+[] false then
+  skip Basic
+else
+  skip Basic
+end
+
+---
+
+(source_file
+  (block
+    (case_statement
+      target: (identifier)
+      pattern: (record
+        label: (atom)
+        field: (record_field
+          name: (atom)
+          value: (identifier))
+        field: (record_field
+          name: (atom)
+          value: (identifier)))
+      body: (in_block
+        (block
+          (skip
+            argument: (identifier))))
+      alternative: (case_alternate
+        pattern: (bool)
+        body: (in_block
+          (block
+            (skip))))
+      alternative: (else_clause
+        consequence: (in_block
+          (block
+            (skip)))))))
+
+===
+procedure definition
+===
+
+proc {Max X Y Z}
+  skip Basic
+end
+
+---
+
+(source_file
+  (block
+    (procedure_definition_statement
+      name: (identifier)
+      parameter: (identifier)
+      parameter: (identifier)
+      parameter: (identifier)
+      body: (block
+          (skip)))))
+
+===
+function definition
+===
+
+fun {Max X Y} B in
+  {Gt X Y B}
+  if B then
+    X
+  else
+    Y
+  end
+end
+
+---
+
+(source_file
+  (block
+    (function_definition_statement
+      name: (identifier)
+      parameter: (identifier)
+      parameter: (identifier)
+      body: (in_expression
+        (in
+          (identifier))
+        (call
+          function: (identifier)
+          arguments: (argument_list
+            argument: (identifier)
+            argument: (identifier)
+            argument: (identifier)))
+        return: (if_expression
+          condition: (identifier)
+          consequence: (in_expression
+            return: (identifier))
+          alternative: (else_expression_clause
+            (in_expression
+              return: (identifier))))))))
+
+===
+call statement
+===
+
+{IntPlus X 1 Z}
+
+---
+(source_file
+  (block
+    (call
+      function: (identifier)
+      arguments: (argument_list
+        argument: (identifier)
+        argument: (int)
+        argument: (identifier)))))
+
+===
+thread statement
+===
+
+thread
+  skip Basic
+end
+
+---
+(source_file
+  (block
+    (thread
+      body: (block
+        (skip)))))

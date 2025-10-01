@@ -17,7 +17,7 @@ module.exports = grammar({
   ],
 
   rules: {
-    source_file: $ => repeat($._definition),
+    source_file: $ => $._definition,
 
     _definition: $ => $.block,
 
@@ -106,13 +106,13 @@ module.exports = grammar({
 
     else_clause: $ => seq(
       "else",
-      field("body", $.in_block),
+      field("consequence", $.in_block),
       "end"
     ),
 
     case_statement: $ => seq(
       "case",
-      field("condition", $._expression),
+      field("target", $._expression),
       "of",
       field("pattern", $._expression),
       "then",
@@ -132,7 +132,7 @@ module.exports = grammar({
       "proc",
       "{",
       field("name", $.identifier),
-      field("parameters", repeat($.identifier)),
+      field("parameter", repeat($.identifier)),
       "}",
       field("body", $.block),
       "end"
@@ -142,7 +142,7 @@ module.exports = grammar({
       "fun",
       "{",
       field("name", $.identifier),
-      field("parameters", repeat($.identifier)),
+      field("parameter", repeat($.identifier)),
       "}",
       field("body", $.in_expression),
       "end"
@@ -156,15 +156,15 @@ module.exports = grammar({
     ),
 
     argument_list: $ => repeat1(
-      choice(
+      field("argument", choice(
         $.identifier,
         $._type
-      )
+      ))
     ),
 
     thread: $ => seq(
       "thread",
-      $.block,
+      field("body", $.block),
       "end"
     ),
 
@@ -182,6 +182,7 @@ module.exports = grammar({
       $.unary_operator,
       // functions are allowed and function calls look the same as procedure applications
       $.call,
+      $.thread
 
       $.identifier,
       $._type,
@@ -206,7 +207,7 @@ module.exports = grammar({
       "proc",
       "{",
       "$",
-      field("parameters", repeat($.identifier)),
+      field("parameter", repeat($.identifier)),
       "}",
       field("body", $.block),
       "end"
@@ -216,7 +217,7 @@ module.exports = grammar({
       "fun",
       "{",
       "$",
-      field("parameters", repeat($.identifier)),
+      field("parameter", repeat($.identifier)),
       "}",
       field("body", $.in_expression),
       "end"
@@ -284,7 +285,7 @@ module.exports = grammar({
 
     case_expression: $ => seq(
       "case",
-      field("condition", $._expression),
+      field("target", $._expression),
       "of",
       field("pattern", $._expression),
       "then",
@@ -314,19 +315,21 @@ module.exports = grammar({
     ),
 
     record: $ => prec(0, seq(
-      $._literal,
+      field("label", $._literal),
       "(",
-      repeat1(seq(
-        choice(
-          $.atom,
-          $.bool,
-          $.int
-        ),
-        ":",
-        $._expression
-      )),
+      repeat1(field("field", $.record_field)),
       ")"
     )),
+
+    record_field: $ => seq(
+      field("name", choice(
+        $.atom,
+        $.bool,
+        $.int
+      )),
+      ":",
+      field("value", $._expression)
+    ),
 
     tuple: $ => prec(1, seq(
       $._literal,
