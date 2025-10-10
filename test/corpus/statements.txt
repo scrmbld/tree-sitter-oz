@@ -87,7 +87,7 @@ end
     (if_statement
       condition: (identifier)
       consequence: (in_block
-        (in
+        definitions: (in
           (assignment
             left: (identifier)
             right: (int)))
@@ -145,6 +145,41 @@ end
             (skip)))))))
 
 ===
+case statemet -- elseless
+===
+
+case T of tree(left:A right:B) then
+  skip Browse A
+[] false then
+  skip Basic
+end
+
+---
+
+(source_file
+  (block
+    (case_statement
+      target: (identifier)
+      pattern: (record
+        label: (atom)
+        field: (record_field
+          name: (atom)
+          value: (identifier))
+        field: (record_field
+          name: (atom)
+          value: (identifier)))
+      body: (in_block
+        (block
+          (skip
+            argument: (identifier))))
+      alternative: (case_alternate
+        pattern: (bool)
+        body: (in_block
+          (block
+            (skip)))))))
+
+
+===
 procedure definition
 ===
 
@@ -161,8 +196,9 @@ end
       parameter: (identifier)
       parameter: (identifier)
       parameter: (identifier)
-      body: (block
-          (skip)))))
+      body: (in_block
+        (block
+          (skip))))))
 
 ===
 function definition
@@ -186,7 +222,7 @@ end
       parameter: (identifier)
       parameter: (identifier)
       body: (in_expression
-        (in
+        definitions: (in
           (identifier))
         (call
           function: (identifier)
@@ -232,3 +268,62 @@ end
     (thread
       body: (block
         (skip)))))
+
+===
+inStatement (in_block)
+===
+
+if B then
+  A
+  tree(val:X left:L right:R) = T
+  fun {FunIncrement X}
+    X + 1
+  end
+  proc {ProcIncrement X ?R}
+    R = X + 1
+  end
+  in
+  skip Basic
+end
+
+---
+(source_file
+  (block
+    (if_statement
+      condition: (identifier)
+      consequence: (in_block
+        definitions: (in
+          (identifier)
+          (assignment
+            left: (record
+              label: (atom)
+              field: (record_field
+                name: (atom)
+                value: (identifier))
+              field: (record_field
+                name: (atom)
+                value: (identifier))
+              field: (record_field
+                name: (atom)
+                value: (identifier)))
+            right: (identifier))
+            (function_definition_statement
+              name: (identifier)
+              parameter: (identifier)
+              body: (in_expression
+              return: (binary_operator
+                left: (identifier)
+                right: (int))))
+            (procedure_definition_statement
+              name: (identifier)
+              parameter: (identifier)
+              parameter: (identifier)
+              body: (in_block
+              (block
+                (assignment
+                  left: (identifier)
+                  right: (binary_operator
+                    left: (identifier)
+                    right: (int)))))))
+          (block
+            (skip))))))

@@ -1,0 +1,131 @@
+===
+procedure definition
+===
+
+Increment = proc {$ N Result}
+  Result = N + 1
+end
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (procedure_definition_expression
+        parameter: (identifier)
+        parameter: (identifier)
+        body: (block
+          (assignment
+          left: (identifier)
+          right: (binary_operator
+            left: (identifier)
+            right: (int))))))))
+
+===
+function definition
+===
+
+Increment = fun {$ N}
+  N + 1
+end
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (function_definition_expression
+        parameter: (identifier)
+        body: (in_expression
+          return: (binary_operator
+            left: (identifier)
+            right: (int)))))))
+
+===
+Binary operators & parenthesis
+===
+
+X = (3 + 2) * Y
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (binary_operator
+        left: (parenthesis
+          (binary_operator
+            left: (int)
+            right: (int)))
+        right: (identifier)))))
+
+===
+unary operators
+===
+
+X = -1
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (unary_operator
+        (int)))))
+
+===
+function call
+===
+
+X = {Max Y Z}
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (call
+        function: (identifier)
+        arguments: (argument_list
+          argument: (identifier)
+          argument: (identifier))))))
+
+===
+thread
+===
+
+X = thread 1 + 2 end
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (thread_expression
+        return: (binary_operator
+          left: (int)
+          right: (int))))))
+
+===
+inExpression
+===
+
+fun {TestFun W}
+  A
+  tree(val:X left:L right:R) = T
+  fun {FunIncrement X}
+    X + 1
+  end
+  proc {ProcIncrement X ?R}
+    R = X + 1
+  end
+  in
+  skip Basic
+  A
+end

@@ -14,16 +14,11 @@
       "type": "PREC_LEFT",
       "value": 1,
       "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "REPEAT1",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_statement"
-            }
-          }
-        ]
+        "type": "REPEAT1",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_statement"
+        }
       }
     },
     "_statement": {
@@ -174,6 +169,14 @@
               {
                 "type": "SYMBOL",
                 "name": "assignment"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "function_definition_statement"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "procedure_definition_statement"
               }
             ]
           }
@@ -246,8 +249,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "in"
+              "type": "FIELD",
+              "name": "definitions",
+              "content": {
+                "type": "SYMBOL",
+                "name": "in"
+              }
             },
             {
               "type": "BLANK"
@@ -423,12 +430,21 @@
           }
         },
         {
-          "type": "FIELD",
-          "name": "alternative",
-          "content": {
-            "type": "SYMBOL",
-            "name": "else_clause"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "alternative",
+              "content": {
+                "type": "SYMBOL",
+                "name": "else_clause"
+              }
+            },
+            {
+              "type": "STRING",
+              "value": "end"
+            }
+          ]
         }
       ]
     },
@@ -500,7 +516,7 @@
           "name": "body",
           "content": {
             "type": "SYMBOL",
-            "name": "block"
+            "name": "in_block"
           }
         },
         {
@@ -642,8 +658,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "in"
+              "type": "FIELD",
+              "name": "definitions",
+              "content": {
+                "type": "SYMBOL",
+                "name": "in"
+              }
             },
             {
               "type": "BLANK"
@@ -710,6 +730,10 @@
         {
           "type": "SYMBOL",
           "name": "call"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "thread_expression"
         },
         {
           "type": "SYMBOL",
@@ -954,6 +978,43 @@
         ]
       }
     },
+    "thread_expression": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "thread"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_statement"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "return",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expression"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_statement_expression"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "end"
+        }
+      ]
+    },
     "local_definition_expression": {
       "type": "SEQ",
       "members": [
@@ -1178,7 +1239,7 @@
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[A-Z]([A-Z]|[a-z]|[0-9]|_)*"
+      "value": "\\??[A-Z]([A-Z]|[a-z]|[0-9]|_)*"
     },
     "_type": {
       "type": "CHOICE",

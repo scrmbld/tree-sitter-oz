@@ -118,6 +118,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -196,6 +200,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -255,6 +263,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "thread_expression",
             "named": true
           },
           {
@@ -414,6 +426,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -506,6 +522,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -565,6 +585,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "thread_expression",
             "named": true
           },
           {
@@ -646,6 +670,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -663,7 +691,7 @@
     "fields": {
       "alternative": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "case_alternate",
@@ -738,6 +766,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -797,6 +829,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "thread_expression",
             "named": true
           },
           {
@@ -899,6 +935,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -984,6 +1024,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "thread_expression",
             "named": true
           },
           {
@@ -1131,6 +1175,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -1223,6 +1271,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -1257,7 +1309,15 @@
           "named": true
         },
         {
+          "type": "function_definition_statement",
+          "named": true
+        },
+        {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "procedure_definition_statement",
           "named": true
         }
       ]
@@ -1266,17 +1326,24 @@
   {
     "type": "in_block",
     "named": true,
-    "fields": {},
+    "fields": {
+      "definitions": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "in",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "block",
-          "named": true
-        },
-        {
-          "type": "in",
           "named": true
         }
       ]
@@ -1286,6 +1353,16 @@
     "type": "in_expression",
     "named": true,
     "fields": {
+      "definitions": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "in",
+            "named": true
+          }
+        ]
+      },
       "return": {
         "multiple": false,
         "required": true,
@@ -1351,6 +1428,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -1383,10 +1464,6 @@
         },
         {
           "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "in",
           "named": true
         },
         {
@@ -1506,6 +1583,10 @@
           "named": true
         },
         {
+          "type": "thread_expression",
+          "named": true
+        },
+        {
           "type": "tuple",
           "named": true
         },
@@ -1551,7 +1632,7 @@
         "required": true,
         "types": [
           {
-            "type": "block",
+            "type": "in_block",
             "named": true
           }
         ]
@@ -1683,6 +1764,10 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -1745,6 +1830,132 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "thread_expression",
+    "named": true,
+    "fields": {
+      "return": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "binary_operator",
+            "named": true
+          },
+          {
+            "type": "bool",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "case_expression",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "function_definition_expression",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "int",
+            "named": true
+          },
+          {
+            "type": "local_definition_expression",
+            "named": true
+          },
+          {
+            "type": "parenthesis",
+            "named": true
+          },
+          {
+            "type": "procedure_definition_expression",
+            "named": true
+          },
+          {
+            "type": "record",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "case_statement",
+          "named": true
+        },
+        {
+          "type": "function_definition_statement",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "local_definition",
+          "named": true
+        },
+        {
+          "type": "procedure_definition_statement",
+          "named": true
+        },
+        {
+          "type": "skip",
+          "named": true
+        },
+        {
+          "type": "thread",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1824,6 +2035,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "thread_expression",
           "named": true
         },
         {

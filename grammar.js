@@ -7,8 +7,6 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-// TODO: Implement "practucal language" features
-
 module.exports = grammar({
   name: "oz",
 
@@ -21,9 +19,9 @@ module.exports = grammar({
 
     _definition: $ => $.block,
 
-    block: $ => prec.left(1, seq(
+    block: $ => prec.left(1,
       repeat1($._statement),
-    )),
+    ),
 
     _statement: $ => prec(1, choice(
       $.skip,
@@ -60,7 +58,9 @@ module.exports = grammar({
       repeat1(
         choice(
           $.identifier,
-          $.assignment
+          $.assignment,
+          $.function_definition_statement,
+          $.procedure_definition_statement
         ),
       ),
       "in"
@@ -80,7 +80,7 @@ module.exports = grammar({
     ),
 
     in_block: $ => seq(
-      optional($.in),
+      optional(field("definitions", $.in)),
       $.block
     ),
 
@@ -118,7 +118,10 @@ module.exports = grammar({
       "then",
       field("body", $.in_block),
       repeat(field("alternative", $.case_alternate)),
-      field("alternative", $.else_clause)
+      choice(
+        field("alternative", $.else_clause),
+        "end"
+      )
     ),
 
     case_alternate: $ => seq(
@@ -134,7 +137,7 @@ module.exports = grammar({
       field("name", $.identifier),
       field("parameter", repeat($.identifier)),
       "}",
-      field("body", $.block),
+      field("body", $.in_block),
       "end"
     ),
 
@@ -169,7 +172,7 @@ module.exports = grammar({
     ),
 
     in_expression: $ => seq(
-      optional($.in),
+      optional(field("definitions", $.in)),
       repeat($._statement),
       field("return", choice($._expression, $._statement_expression))
     ),
@@ -182,7 +185,7 @@ module.exports = grammar({
       $.unary_operator,
       // functions are allowed and function calls look the same as procedure applications
       $.call,
-      $.thread
+      $.thread_expression,
 
       $.identifier,
       $._type,
@@ -250,6 +253,13 @@ module.exports = grammar({
       $._expression
     )),
 
+    thread_expression: $ => seq(
+      "thread",
+      repeat($._statement),
+      field("return", choice($._expression, $._statement_expression)),
+      "end"
+    ),
+
     local_definition_expression: $ => seq(
       "local",
       $.in_expression,
@@ -304,7 +314,7 @@ module.exports = grammar({
 
 
     // first letter of identifier must be uppercase
-    identifier: $ => /[A-Z]([A-Z]|[a-z]|[0-9]|_)*/,
+    identifier: $ => /\??[A-Z]([A-Z]|[a-z]|[0-9]|_)*/,
 
     _type: $ => choice(
       $.record,
