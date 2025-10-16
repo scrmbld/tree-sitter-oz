@@ -161,7 +161,8 @@ module.exports = grammar({
     argument_list: $ => repeat1(
       field("argument", choice(
         $.identifier,
-        $._type
+        $._type,
+        $.parenthesis
       ))
     ),
 

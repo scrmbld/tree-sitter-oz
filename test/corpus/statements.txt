@@ -243,6 +243,7 @@ call statement
 ===
 
 {IntPlus X 1 Z}
+{IntPlus X (Y + 1) Z}
 
 ---
 (source_file
@@ -252,6 +253,15 @@ call statement
       arguments: (argument_list
         argument: (identifier)
         argument: (int)
+        argument: (identifier)))
+    (call
+      function: (identifier)
+      arguments: (argument_list
+        argument: (identifier)
+        argument: (parenthesis
+            (binary_operator
+                left: (identifier)
+                right: (int)))
         argument: (identifier)))))
 
 ===

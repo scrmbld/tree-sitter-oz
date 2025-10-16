@@ -625,6 +625,10 @@
             {
               "type": "SYMBOL",
               "name": "_type"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "parenthesis"
             }
           ]
         }
