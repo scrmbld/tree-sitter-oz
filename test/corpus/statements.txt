@@ -244,6 +244,7 @@ call statement
 
 {IntPlus X 1 Z}
 {IntPlus X (Y + 1) Z}
+{IntPlus X {Max W Y}  Z}
 
 ---
 (source_file
@@ -262,6 +263,16 @@ call statement
             (binary_operator
                 left: (identifier)
                 right: (int)))
+        argument: (identifier)))
+    (call
+      function: (identifier)
+      arguments: (argument_list
+        argument: (identifier)
+        argument: (call
+            function: (identifier)
+            arguments: (argument_list
+                argument: (identifier)
+                argument: (identifier)))
         argument: (identifier)))))
 
 ===

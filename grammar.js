@@ -162,7 +162,8 @@ module.exports = grammar({
       field("argument", choice(
         $.identifier,
         $._type,
-        $.parenthesis
+        $.parenthesis,
+        $.call
       ))
     ),
 

@@ -16,6 +16,10 @@
             "named": true
           },
           {
+            "type": "call",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
