@@ -135,7 +135,7 @@ module.exports = grammar({
       "proc",
       "{",
       field("name", $.identifier),
-      field("parameter", repeat($.identifier)),
+      field("argument", repeat($.identifier)),
       "}",
       field("body", $.in_block),
       "end"
@@ -145,7 +145,7 @@ module.exports = grammar({
       "fun",
       "{",
       field("name", $.identifier),
-      field("parameter", repeat($.identifier)),
+      field("argument", repeat($.identifier)),
       "}",
       field("body", $.in_expression),
       "end"
@@ -212,7 +212,7 @@ module.exports = grammar({
       "proc",
       "{",
       "$",
-      field("parameter", repeat($.identifier)),
+      field("argument", repeat($.identifier)),
       "}",
       field("body", $.block),
       "end"
@@ -222,7 +222,7 @@ module.exports = grammar({
       "fun",
       "{",
       "$",
-      field("parameter", repeat($.identifier)),
+      field("argument", repeat($.identifier)),
       "}",
       field("body", $.in_expression),
       "end"

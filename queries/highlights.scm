@@ -7,8 +7,22 @@
 
 (call
      arguments: (argument_list
-                  (identifier) @variable.parameter)
-     )
+                  (identifier) @variable.parameter))
+
+; function/procedure definitions
+(function_definition_statement
+    name: (identifier) @function
+    (identifier) @variable.parameter)
+
+(function_definition_expression
+    (identifier) @variable.parameter)
+
+(procedure_definition_statement
+    name: (identifier) @function
+    (identifier) @variable.parameter)
+
+(procedure_definition_expression
+    (identifier) @variable.parameter)
 
 (skip
   [

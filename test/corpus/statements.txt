@@ -193,9 +193,9 @@ end
   (block
     (procedure_definition_statement
       name: (identifier)
-      parameter: (identifier)
-      parameter: (identifier)
-      parameter: (identifier)
+      argument: (identifier)
+      argument: (identifier)
+      argument: (identifier)
       body: (in_block
         (block
           (skip))))))
@@ -219,8 +219,8 @@ end
   (block
     (function_definition_statement
       name: (identifier)
-      parameter: (identifier)
-      parameter: (identifier)
+      argument: (identifier)
+      argument: (identifier)
       body: (in_expression
         definitions: (in
           (identifier))
@@ -330,15 +330,15 @@ end
             right: (identifier))
             (function_definition_statement
               name: (identifier)
-              parameter: (identifier)
+              argument: (identifier)
               body: (in_expression
               return: (binary_operator
                 left: (identifier)
                 right: (int))))
             (procedure_definition_statement
               name: (identifier)
-              parameter: (identifier)
-              parameter: (identifier)
+              argument: (identifier)
+              argument: (identifier)
               body: (in_block
               (block
                 (assignment

@@ -13,8 +13,8 @@ end
     (assignment
       left: (identifier)
       right: (procedure_definition_expression
-        parameter: (identifier)
-        parameter: (identifier)
+        argument: (identifier)
+        argument: (identifier)
         body: (block
           (assignment
           left: (identifier)
@@ -37,7 +37,7 @@ end
     (assignment
       left: (identifier)
       right: (function_definition_expression
-        parameter: (identifier)
+        argument: (identifier)
         body: (in_expression
           return: (binary_operator
             left: (identifier)
