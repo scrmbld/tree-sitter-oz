@@ -12,6 +12,10 @@
             "named": true
           },
           {
+            "type": "binary_operator",
+            "named": true
+          },
+          {
             "type": "bool",
             "named": true
           },
@@ -21,6 +25,10 @@
           },
           {
             "type": "float",
+            "named": true
+          },
+          {
+            "type": "function_definition_expression",
             "named": true
           },
           {
@@ -36,6 +44,10 @@
             "named": true
           },
           {
+            "type": "procedure_definition_expression",
+            "named": true
+          },
+          {
             "type": "record",
             "named": true
           },
@@ -44,7 +56,15 @@
             "named": true
           },
           {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator",
             "named": true
           }
         ]
@@ -57,25 +77,21 @@
     "fields": {
       "left": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "identifier",
             "named": true
           },
           {
-            "type": "record",
-            "named": true
-          },
-          {
-            "type": "tuple",
+            "type": "pattern",
             "named": true
           }
         ]
       },
       "right": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "atom",
@@ -139,16 +155,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "procedure_definition_expression",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -455,7 +461,7 @@
     "fields": {
       "alternative": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "case_expression_alternate",
@@ -482,63 +488,7 @@
         "required": true,
         "types": [
           {
-            "type": "atom",
-            "named": true
-          },
-          {
-            "type": "binary_operator",
-            "named": true
-          },
-          {
-            "type": "bool",
-            "named": true
-          },
-          {
-            "type": "call",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "function_definition_expression",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "int",
-            "named": true
-          },
-          {
-            "type": "parenthesis",
-            "named": true
-          },
-          {
-            "type": "procedure_definition_expression",
-            "named": true
-          },
-          {
-            "type": "record",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "thread_expression",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": true
-          },
-          {
-            "type": "unary_operator",
+            "type": "pattern",
             "named": true
           }
         ]
@@ -630,63 +580,7 @@
         "required": true,
         "types": [
           {
-            "type": "atom",
-            "named": true
-          },
-          {
-            "type": "binary_operator",
-            "named": true
-          },
-          {
-            "type": "bool",
-            "named": true
-          },
-          {
-            "type": "call",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "function_definition_expression",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "int",
-            "named": true
-          },
-          {
-            "type": "parenthesis",
-            "named": true
-          },
-          {
-            "type": "procedure_definition_expression",
-            "named": true
-          },
-          {
-            "type": "record",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "thread_expression",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": true
-          },
-          {
-            "type": "unary_operator",
+            "type": "pattern",
             "named": true
           }
         ]
@@ -726,63 +620,7 @@
         "required": true,
         "types": [
           {
-            "type": "atom",
-            "named": true
-          },
-          {
-            "type": "binary_operator",
-            "named": true
-          },
-          {
-            "type": "bool",
-            "named": true
-          },
-          {
-            "type": "call",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "function_definition_expression",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "int",
-            "named": true
-          },
-          {
-            "type": "parenthesis",
-            "named": true
-          },
-          {
-            "type": "procedure_definition_expression",
-            "named": true
-          },
-          {
-            "type": "record",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "thread_expression",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": true
-          },
-          {
-            "type": "unary_operator",
+            "type": "pattern",
             "named": true
           }
         ]
@@ -1522,13 +1360,134 @@
   {
     "type": "local_definition_expression",
     "named": true,
-    "fields": {},
+    "fields": {
+      "definitions": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "in",
+            "named": true
+          }
+        ]
+      },
+      "return": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "binary_operator",
+            "named": true
+          },
+          {
+            "type": "bool",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "case_expression",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "function_definition_expression",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "int",
+            "named": true
+          },
+          {
+            "type": "local_definition_expression",
+            "named": true
+          },
+          {
+            "type": "parenthesis",
+            "named": true
+          },
+          {
+            "type": "procedure_definition_expression",
+            "named": true
+          },
+          {
+            "type": "record",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "thread_expression",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
         {
-          "type": "in_expression",
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "case_statement",
+          "named": true
+        },
+        {
+          "type": "function_definition_statement",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "local_definition",
+          "named": true
+        },
+        {
+          "type": "procedure_definition_statement",
+          "named": true
+        },
+        {
+          "type": "skip",
+          "named": true
+        },
+        {
+          "type": "thread",
           "named": true
         }
       ]
@@ -1600,6 +1559,29 @@
         },
         {
           "type": "unary_operator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_operator",
+          "named": true
+        },
+        {
+          "type": "parenthesis",
+          "named": true
+        },
+        {
+          "type": "record",
           "named": true
         }
       ]

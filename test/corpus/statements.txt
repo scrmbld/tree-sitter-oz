@@ -24,7 +24,7 @@ skip Check
 local statement
 =====
 
-local X in
+local X (Y|Z) = {G} in
   skip Browse X
 end
 
@@ -33,7 +33,15 @@ end
   (block
     (local_definition
       definitions: (in
-        (identifier))
+        (identifier)
+        (assignment
+          left: (pattern
+            (parenthesis
+              (binary_operator
+                left: (identifier)
+                right: (identifier))))
+          right: (call
+            function: (identifier))))
       body: (block
         (skip
           argument: (identifier))))))
@@ -45,6 +53,7 @@ assignment
 X = 1
 Z = Y
 tree(left:A right:B) = T
+(X|Xs) = {G}
 
 ---
 
@@ -57,16 +66,24 @@ tree(left:A right:B) = T
       left: (identifier)
       right: (identifier))
     (assignment
-      left: (record
-        label: (atom)
-        field: (record_field
-          name: (atom)
-          value: (identifier))
-        field: (record_field
-          name: (atom)
-          value: (identifier)))
-
-      right: (identifier))))
+      left: (pattern
+        (record
+          label: (atom)
+          field: (record_field
+            name: (atom)
+            value: (identifier))
+          field: (record_field
+            name: (atom)
+            value: (identifier))))
+      right: (identifier))
+      (assignment
+        left: (pattern
+          (parenthesis
+            (binary_operator
+            left: (identifier)
+            right: (identifier))))
+        right: (call
+          function: (identifier)))))
 
 ===
 if statement
@@ -122,14 +139,15 @@ end
   (block
     (case_statement
       target: (identifier)
-      pattern: (record
-        label: (atom)
-        field: (record_field
-          name: (atom)
-          value: (identifier))
-        field: (record_field
-          name: (atom)
-          value: (identifier)))
+      pattern: (pattern
+        (record
+          label: (atom)
+          field: (record_field
+            name: (atom)
+            value: (identifier))
+          field: (record_field
+            name: (atom)
+            value: (identifier))))
       body: (in_block
         (block
           (skip
@@ -145,7 +163,7 @@ end
             (skip)))))))
 
 ===
-case statemet -- elseless
+case statement -- elseless
 ===
 
 case T of tree(left:A right:B) then
@@ -160,14 +178,15 @@ end
   (block
     (case_statement
       target: (identifier)
-      pattern: (record
-        label: (atom)
-        field: (record_field
-          name: (atom)
-          value: (identifier))
-        field: (record_field
-          name: (atom)
-          value: (identifier)))
+      pattern: (pattern
+        (record
+          label: (atom)
+          field: (record_field
+            name: (atom)
+            value: (identifier))
+          field: (record_field
+            name: (atom)
+            value: (identifier))))
       body: (in_block
         (block
           (skip
@@ -316,17 +335,18 @@ end
         definitions: (in
           (identifier)
           (assignment
-            left: (record
-              label: (atom)
-              field: (record_field
-                name: (atom)
-                value: (identifier))
-              field: (record_field
-                name: (atom)
-                value: (identifier))
-              field: (record_field
-                name: (atom)
-                value: (identifier)))
+            left: (pattern
+              (record
+                label: (atom)
+                field: (record_field
+                  name: (atom)
+                  value: (identifier))
+                field: (record_field
+                  name: (atom)
+                  value: (identifier))
+                field: (record_field
+                  name: (atom)
+                  value: (identifier))))
             right: (identifier))
             (function_definition_statement
               name: (identifier)

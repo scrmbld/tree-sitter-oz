@@ -14,6 +14,11 @@ module.exports = grammar({
     $.comment, /\s/
   ],
 
+  conflicts: $ => [
+    // this conflicts because they can both start with identifiers
+    [$.in, $._expression]
+  ],
+
   rules: {
     source_file: $ => $._definition,
 
@@ -66,17 +71,13 @@ module.exports = grammar({
       "in"
     ),
 
-    assignment: $ => choice(
-      seq(
-        choice(
-          field("left", $.identifier),
-          field("left", $.record),
-          field("left", $.tuple)
-        ),
-        "=",
-        field("right", $._expression)
-      ),
-      $.procedure_definition_expression
+    assignment: $ => seq(
+      field("left", choice(
+        $.pattern,
+        $.identifier
+      )),
+      "=",
+      field("right", $._expression),
     ),
 
     in_block: $ => seq(
@@ -114,7 +115,7 @@ module.exports = grammar({
       "case",
       field("target", $._expression),
       "of",
-      field("pattern", $._expression),
+      field("pattern", $.pattern),
       "then",
       field("body", $.in_block),
       repeat(field("alternative", $.case_alternate)),
@@ -129,6 +130,13 @@ module.exports = grammar({
       field("pattern", $._expression),
       "then",
       field("body", $.in_block)
+    ),
+
+    pattern: $ => choice(
+      // NOTE: this includes invalid patterns
+      $.binary_operator,
+      $.parenthesis,
+      $.record
     ),
 
     procedure_definition_statement: $ => seq(
@@ -160,10 +168,8 @@ module.exports = grammar({
 
     argument_list: $ => repeat1(
       field("argument", choice(
-        $.identifier,
-        $._type,
-        $.parenthesis,
-        $.call
+        // hoz has some restrictions, but Mozart allows any expression (I think)
+        $._expression
       ))
     ),
 
@@ -264,7 +270,9 @@ module.exports = grammar({
 
     local_definition_expression: $ => seq(
       "local",
-      $.in_expression,
+      field("definitions", $.in),
+      repeat($._statement),
+      field("return", choice($._expression, $._statement_expression)),
       "end"
     ),
 
@@ -299,16 +307,20 @@ module.exports = grammar({
       "case",
       field("target", $._expression),
       "of",
-      field("pattern", $._expression),
+      field("pattern", $.pattern),
       "then",
       field("body", $.in_expression),
       repeat(field("alternative", $.case_expression_alternate)),
-      field("alternative", $.else_expression_clause)
+      // this cursed langauge allows if & case expressions with no else
+      choice(
+        field("alternative", $.else_expression_clause),
+        "end"
+      )
     ),
 
     case_expression_alternate: $ => seq(
       "[]",
-      field("pattern", $._expression),
+      field("pattern", $.pattern),
       "then",
       field("body", $.in_expression)
     ),
@@ -384,6 +396,6 @@ module.exports = grammar({
         /[^*]*\*+([^/*][^*]*\*+)*/,
         '/',
       ),
-    ))
+    )),
   }
 });
