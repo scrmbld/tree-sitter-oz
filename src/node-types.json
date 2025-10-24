@@ -442,67 +442,7 @@
         "required": true,
         "types": [
           {
-            "type": "atom",
-            "named": true
-          },
-          {
-            "type": "binary_operator",
-            "named": true
-          },
-          {
-            "type": "bool",
-            "named": true
-          },
-          {
-            "type": "call",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "function_definition_expression",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "int",
-            "named": true
-          },
-          {
-            "type": "list",
-            "named": true
-          },
-          {
-            "type": "parenthesis",
-            "named": true
-          },
-          {
-            "type": "procedure_definition_expression",
-            "named": true
-          },
-          {
-            "type": "record",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "thread_expression",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": true
-          },
-          {
-            "type": "unary_operator",
+            "type": "pattern",
             "named": true
           }
         ]
@@ -1226,7 +1166,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "assignment",
@@ -1996,7 +1936,7 @@
         "required": true,
         "types": [
           {
-            "type": "block",
+            "type": "in_block",
             "named": true
           }
         ]
@@ -2292,6 +2232,10 @@
     "named": false
   },
   {
+    "type": "andthen",
+    "named": false
+  },
+  {
     "type": "atom",
     "named": true
   },
@@ -2362,6 +2306,10 @@
   },
   {
     "type": "of",
+    "named": false
+  },
+  {
+    "type": "orelse",
     "named": false
   },
   {

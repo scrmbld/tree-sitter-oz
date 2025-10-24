@@ -20,7 +20,7 @@ module.exports = grammar({
     // both of these can start with assignments
     [$.in, $._statement],
     // call statements and expressions have the exact same syntax
-    [$._statement, $._expression]
+    [$._statement, $._expression],
   ],
 
   rules: {
@@ -65,7 +65,7 @@ module.exports = grammar({
     ),
 
     in: $ => seq(
-      repeat1(
+      repeat(
         choice(
           $.identifier,
           $.assignment,
@@ -132,7 +132,7 @@ module.exports = grammar({
 
     case_alternate: $ => seq(
       "[]",
-      field("pattern", $._expression),
+      field("pattern", $.pattern),
       "then",
       field("body", $.in_block)
     ),
@@ -181,7 +181,7 @@ module.exports = grammar({
 
     thread: $ => seq(
       "thread",
-      field("body", $.block),
+      field("body", $.in_block),
       "end"
     ),
 
@@ -266,7 +266,9 @@ module.exports = grammar({
         "mod",
         ".",
         "#", // tuple
-        "|" // list
+        "|", // list
+        "andthen",
+        "orelse"
       ),
       field("right", $._expression)
     )),

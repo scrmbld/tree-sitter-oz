@@ -306,8 +306,9 @@ end
 (source_file
   (block
     (thread
-      body: (block
-        (skip)))))
+      body: (in_block
+        (block
+          (skip))))))
 
 ===
 inStatement (in_block)
