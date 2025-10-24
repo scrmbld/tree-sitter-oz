@@ -1694,6 +1694,10 @@
           "named": true
         },
         {
+          "type": "bool",
+          "named": true
+        },
+        {
           "type": "parenthesis",
           "named": true
         },

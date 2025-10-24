@@ -153,7 +153,8 @@ end
           (skip
             argument: (identifier))))
       alternative: (case_alternate
-        pattern: (bool)
+        pattern: (pattern
+          (bool))
         body: (in_block
           (block
             (skip))))
@@ -192,7 +193,8 @@ end
           (skip
             argument: (identifier))))
       alternative: (case_alternate
-        pattern: (bool)
+        pattern: (pattern
+          (bool))
         body: (in_block
           (block
             (skip)))))))

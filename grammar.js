@@ -142,7 +142,8 @@ module.exports = grammar({
       $.binary_operator,
       $.parenthesis,
       $.record,
-      $.atom
+      $.atom,
+      $.bool
     ),
 
     procedure_definition_statement: $ => seq(
