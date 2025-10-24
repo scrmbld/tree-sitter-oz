@@ -368,3 +368,29 @@ end
                     right: (int)))))))
           (block
             (skip))))))
+
+===
+byNeed
+===
+
+byNeed fun {$} X end Y
+byNeed proc {$ R} R = X end Y
+
+---
+
+(source_file
+  (block
+    (by_need
+      function: (function_definition_expression
+        body: (in_expression
+          return: (identifier)))
+      target: (identifier))
+    (by_need
+      function: (procedure_definition_expression
+        argument: (identifier)
+        body: (in_block
+          (block
+            (assignment
+              left: (identifier)
+              right: (identifier)))))
+      target: (identifier))))

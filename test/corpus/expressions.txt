@@ -15,12 +15,13 @@ end
       right: (procedure_definition_expression
         argument: (identifier)
         argument: (identifier)
-        body: (block
+        body: (in_block
+          (block
           (assignment
           left: (identifier)
           right: (binary_operator
             left: (identifier)
-            right: (int))))))))
+            right: (int)))))))))
 
 ===
 function definition
@@ -108,9 +109,10 @@ X = thread 1 + 2 end
     (assignment
       left: (identifier)
       right: (thread_expression
+        (in_expression
         return: (binary_operator
           left: (int)
-          right: (int))))))
+          right: (int)))))))
 
 ===
 inExpression
@@ -129,3 +131,46 @@ fun {TestFun W}
   skip Basic
   A
 end
+
+===
+tuples
+===
+
+X = someLabel(1 (X + 3) {G})
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (tuple
+        label: (atom)
+        field: (int)
+        field: (parenthesis
+          (binary_operator
+            left: (identifier)
+            right: (int)))
+        field: (call
+          function: (identifier))))))
+
+===
+lists
+===
+
+X = [1 (X + 3) {G}]
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (list
+        (int)
+        (parenthesis
+          (binary_operator
+            left: (identifier)
+            right: (int)))
+        (call
+          function: (identifier))))))

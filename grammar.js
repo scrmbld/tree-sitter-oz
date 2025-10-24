@@ -16,7 +16,11 @@ module.exports = grammar({
 
   conflicts: $ => [
     // this conflicts because they can both start with identifiers
-    [$.in, $._expression]
+    [$.in, $._expression],
+    // both of these can start with assignments
+    [$.in, $._statement],
+    // call statements and expressions have the exact same syntax
+    [$._statement, $._expression]
   ],
 
   rules: {
@@ -28,7 +32,7 @@ module.exports = grammar({
       repeat1($._statement),
     ),
 
-    _statement: $ => prec(1, choice(
+    _statement: $ => choice(
       $.skip,
       $.local_definition,
       $.assignment,
@@ -37,8 +41,9 @@ module.exports = grammar({
       $.procedure_definition_statement,
       $.function_definition_statement,
       $.call,
-      $.thread
-    )),
+      $.thread,
+      $.by_need
+    ),
 
     skip: $ => seq(
       "skip",
@@ -136,7 +141,8 @@ module.exports = grammar({
       // NOTE: this includes invalid patterns
       $.binary_operator,
       $.parenthesis,
-      $.record
+      $.record,
+      $.atom
     ),
 
     procedure_definition_statement: $ => seq(
@@ -179,10 +185,19 @@ module.exports = grammar({
       "end"
     ),
 
+    by_need: $ => seq(
+      "byNeed",
+      field("function", choice(
+        $.function_definition_expression,
+        $.procedure_definition_expression
+      )),
+      field("target", $.identifier)
+    ),
+
     in_expression: $ => seq(
       optional(field("definitions", $.in)),
       repeat($._statement),
-      field("return", choice($._expression, $._statement_expression))
+      field("return", prec(1, choice($._expression, $._statement_expression)))
     ),
 
     _expression: $ => choice(
@@ -220,7 +235,7 @@ module.exports = grammar({
       "$",
       field("argument", repeat($.identifier)),
       "}",
-      field("body", $.block),
+      field("body", $.in_block),
       "end"
     ),
 
@@ -261,10 +276,10 @@ module.exports = grammar({
       $._expression
     )),
 
+    // this needs higher precedence because it overlaps with thread
     thread_expression: $ => seq(
       "thread",
-      repeat($._statement),
-      field("return", choice($._expression, $._statement_expression)),
+      $.in_expression,
       "end"
     ),
 
@@ -333,6 +348,7 @@ module.exports = grammar({
     _type: $ => choice(
       $.record,
       $.tuple,
+      $.list,
       $._number,
       $.string,
       $._literal
@@ -356,13 +372,19 @@ module.exports = grammar({
     ),
 
     tuple: $ => prec(1, seq(
-      $._literal,
+      field("label", $._literal),
       "(",
-      repeat1(
-        $.identifier
+      repeat(
+        field("field", $._expression)
       ),
       ")"
     )),
+
+    list: $ => seq(
+      "[",
+      repeat($._expression),
+      "]"
+    ),
 
     _number: $ => choice(
       $.int,
