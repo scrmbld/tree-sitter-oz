@@ -148,14 +148,14 @@ end
           field: (record_field
             name: (atom)
             value: (identifier))))
-      body: (in_block
+      consequence: (in_block
         (block
           (skip
             argument: (identifier))))
       alternative: (case_alternate
         pattern: (pattern
           (bool))
-        body: (in_block
+        consequence: (in_block
           (block
             (skip))))
       alternative: (else_clause
@@ -188,14 +188,14 @@ end
           field: (record_field
             name: (atom)
             value: (identifier))))
-      body: (in_block
+      consequence: (in_block
         (block
           (skip
             argument: (identifier))))
       alternative: (case_alternate
         pattern: (pattern
           (bool))
-        body: (in_block
+        consequence: (in_block
           (block
             (skip)))))))
 
@@ -224,7 +224,7 @@ else skip Basic end
       condition: (binary_operator
         left: (identifier)
         right: (int))
-      body: (in_block
+      consequence: (in_block
         (block
           (skip)))
       alternative: (case_alternate
@@ -232,7 +232,7 @@ else skip Basic end
           (record_construction_op
             left: (identifier)
             right: (atom)))
-        body: (in_block
+        consequence: (in_block
           (block
             (skip))))
       alternative: (case_alternate
@@ -243,7 +243,7 @@ else skip Basic end
         condition: (binary_operator
             left: (identifier)
             right: (identifier))
-        body: (in_block
+        consequence: (in_block
           (block
             (skip))))
       alternative: (else_clause
@@ -308,7 +308,7 @@ end
           consequence: (in_expression
             return: (identifier))
           alternative: (else_expression_clause
-            (in_expression
+            consequence: (in_expression
               return: (identifier))))))))
 
 ===

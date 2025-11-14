@@ -416,7 +416,7 @@
         },
         {
           "type": "FIELD",
-          "name": "body",
+          "name": "consequence",
           "content": {
             "type": "SYMBOL",
             "name": "in_block"
@@ -498,7 +498,7 @@
         },
         {
           "type": "FIELD",
-          "name": "body",
+          "name": "consequence",
           "content": {
             "type": "SYMBOL",
             "name": "in_block"
@@ -1253,7 +1253,7 @@
         },
         {
           "type": "FIELD",
-          "name": "body",
+          "name": "consequence",
           "content": {
             "type": "SYMBOL",
             "name": "in_expression"
@@ -1269,16 +1269,20 @@
           "value": "else"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "in_expression"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "FIELD",
+          "name": "consequence",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "in_expression"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
         },
         {
           "type": "STRING",
@@ -1314,12 +1318,37 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "condition",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "andthen"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_expression"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "then"
         },
         {
           "type": "FIELD",
-          "name": "body",
+          "name": "consequence",
           "content": {
             "type": "SYMBOL",
             "name": "in_expression"
@@ -1371,12 +1400,37 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "condition",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "andthen"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_expression"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "then"
         },
         {
           "type": "FIELD",
-          "name": "body",
+          "name": "consequence",
           "content": {
             "type": "SYMBOL",
             "name": "in_expression"

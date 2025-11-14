@@ -174,3 +174,46 @@ X = [1 (X + 3) {G}]
             right: (int)))
         (call
           function: (identifier))))))
+
+===
+case expression -- andthen
+===
+
+F = fun {$}
+  case Xs
+    of (X|Xr) andthen X < 2 then 0
+    [] (X|Xr) andthen X > 2 then 3
+  end
+end
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (function_definition_expression
+        body: (in_expression
+          return: (case_expression
+            target: (identifier)
+            pattern: (pattern
+              (parenthesis
+                (record_construction_op
+                  left: (identifier)
+                  right: (identifier))))
+            condition: (binary_operator
+              left: (identifier)
+              right: (int))
+            consequence: (in_expression
+              return: (int))
+          alternative: (case_expression_alternate
+            pattern: (pattern
+              (parenthesis
+                (record_construction_op
+                  left: (identifier)
+                  right: (identifier))))
+            condition: (binary_operator
+              left: (identifier)
+              right: (int))
+            consequence: (in_expression
+                return: (int)))))))))

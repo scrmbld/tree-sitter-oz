@@ -130,7 +130,7 @@ module.exports = grammar({
         $._expression
       ))),
       "then",
-      field("body", $.in_block),
+      field("consequence", $.in_block),
       repeat(field("alternative", $.case_alternate)),
       choice(
         field("alternative", $.else_clause),
@@ -146,7 +146,7 @@ module.exports = grammar({
         $._expression
       ))),
       "then",
-      field("body", $.in_block)
+      field("consequence", $.in_block)
     ),
 
     pattern: $ => choice(
@@ -332,12 +332,12 @@ module.exports = grammar({
       "elseif",
       field("condition", $._expression),
       "then",
-      field("body", $.in_expression)
+      field("consequence", $.in_expression)
     ),
 
     else_expression_clause: $ => seq(
       "else",
-      optional($.in_expression),
+      field("consequence", optional($.in_expression)),
       "end"
     ),
 
@@ -346,8 +346,12 @@ module.exports = grammar({
       field("target", $._expression),
       "of",
       field("pattern", $.pattern),
+      optional(field("condition", seq(
+        "andthen",
+        $._expression
+      ))),
       "then",
-      field("body", $.in_expression),
+      field("consequence", $.in_expression),
       repeat(field("alternative", $.case_expression_alternate)),
       // this cursed langauge allows if & case expressions with no else
       choice(
@@ -359,8 +363,12 @@ module.exports = grammar({
     case_expression_alternate: $ => seq(
       "[]",
       field("pattern", $.pattern),
+      optional(field("condition", seq(
+        "andthen",
+        $._expression
+      ))),
       "then",
-      field("body", $.in_expression)
+      field("consequence", $.in_expression)
     ),
 
 
