@@ -21,6 +21,10 @@ module.exports = grammar({
     [$.in, $._statement],
     // call statements and expressions have the exact same syntax
     [$._statement, $._expression],
+    // patterns are a subset of expressions
+    [$.pattern, $._expression],
+    // patterns can include some members of _type
+    [$.pattern, $._type],
   ],
 
   rules: {
@@ -121,6 +125,10 @@ module.exports = grammar({
       field("target", $._expression),
       "of",
       field("pattern", $.pattern),
+      optional(field("condition", seq(
+        "andthen",
+        $._expression
+      ))),
       "then",
       field("body", $.in_block),
       repeat(field("alternative", $.case_alternate)),
@@ -133,13 +141,17 @@ module.exports = grammar({
     case_alternate: $ => seq(
       "[]",
       field("pattern", $.pattern),
+      optional(field("condition", seq(
+        "andthen",
+        $._expression
+      ))),
       "then",
       field("body", $.in_block)
     ),
 
     pattern: $ => choice(
-      // NOTE: this includes invalid patterns
-      $.binary_operator,
+      // NOTE: this includes some invalid patterns
+      $.record_construction_op,
       $.parenthesis,
       $.record,
       $.atom,
@@ -206,6 +218,7 @@ module.exports = grammar({
       prec(1, $.function_definition_expression),
       $.parenthesis,
       $.binary_operator,
+      $.record_construction_op,
       $.unary_operator,
       // functions are allowed and function calls look the same as procedure applications
       $.call,
@@ -266,10 +279,17 @@ module.exports = grammar({
         "div",
         "mod",
         ".",
-        "#", // tuple
-        "|", // list
         "andthen",
         "orelse"
+      ),
+      field("right", $._expression)
+    )),
+
+    record_construction_op: $ => prec.left(2, seq(
+      field("left", $._expression),
+      choice(
+        "|",
+        "#"
       ),
       field("right", $._expression)
     )),

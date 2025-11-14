@@ -63,6 +63,8 @@
  "skip"
  "thread"
  "byNeed"
+ "andthen"
+ "orelse"
  ] @keyword
 
 [

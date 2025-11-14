@@ -37,7 +37,7 @@ end
         (assignment
           left: (pattern
             (parenthesis
-              (binary_operator
+              (record_construction_op
                 left: (identifier)
                 right: (identifier))))
           right: (call
@@ -79,7 +79,7 @@ tree(left:A right:B) = T
       (assignment
         left: (pattern
           (parenthesis
-            (binary_operator
+            (record_construction_op
             left: (identifier)
             right: (identifier))))
         right: (call
@@ -196,6 +196,58 @@ end
         pattern: (pattern
           (bool))
         body: (in_block
+          (block
+            (skip)))))))
+
+===
+case statement -- andthen
+===
+
+case Xs#Ys
+  of nil#Ys andthen Ys > 2 then skip Basic
+  [] Xs#nil then skip Basic
+  [] X|Xr andthen X =< Y then skip Basic
+else skip Basic end
+
+---
+
+(source_file
+  (block
+    (case_statement
+      target: (record_construction_op
+        left: (identifier)
+        right: (identifier))
+      pattern: (pattern
+        (record_construction_op
+          left: (atom)
+          right: (identifier)))
+      condition: (binary_operator
+        left: (identifier)
+        right: (int))
+      body: (in_block
+        (block
+          (skip)))
+      alternative: (case_alternate
+        pattern: (pattern
+          (record_construction_op
+            left: (identifier)
+            right: (atom)))
+        body: (in_block
+          (block
+            (skip))))
+      alternative: (case_alternate
+        pattern: (pattern
+          (record_construction_op
+            left: (identifier)
+            right: (identifier)))
+        condition: (binary_operator
+            left: (identifier)
+            right: (identifier))
+        body: (in_block
+          (block
+            (skip))))
+      alternative: (else_clause
+        consequence: (in_block
           (block
             (skip)))))))
 
