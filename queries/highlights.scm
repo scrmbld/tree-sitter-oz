@@ -65,6 +65,7 @@
  "byNeed"
  "andthen"
  "orelse"
+ "newCell"
  ] @keyword
 
 [

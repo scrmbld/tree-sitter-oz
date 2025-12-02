@@ -1,6 +1,6 @@
-====
+===
 skip statement
-====
+===
 
 skip Basic
 skip Stack
@@ -20,9 +20,9 @@ skip Check
   )
 )
 
-=====
+===
 local statement
-=====
+===
 
 local X (Y|Z) = {G} in
   skip Browse X
@@ -34,7 +34,7 @@ end
     (local_definition
       definitions: (in
         (identifier)
-        (assignment
+        (unification
           left: (pattern
             (parenthesis
               (record_construction_op
@@ -47,7 +47,7 @@ end
           argument: (identifier))))))
 
 ===
-assignment
+unification
 ===
 
 X = 1
@@ -59,13 +59,13 @@ tree(left:A right:B) = T
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (int))
-    (assignment
+    (unification
       left: (identifier)
       right: (identifier))
-    (assignment
+    (unification
       left: (pattern
         (record
           label: (atom)
@@ -76,7 +76,7 @@ tree(left:A right:B) = T
             name: (atom)
             value: (identifier))))
       right: (identifier))
-      (assignment
+      (unification
         left: (pattern
           (parenthesis
             (record_construction_op
@@ -84,6 +84,53 @@ tree(left:A right:B) = T
             right: (identifier))))
         right: (call
           function: (identifier)))))
+
+===
+assignment
+===
+
+X := Y
+Z := 2 + @W
+
+---
+
+(source_file
+  (block
+    (assignment
+      left: (identifier)
+      right: (identifier))
+    (assignment
+      left: (identifier)
+      right: (binary_operator
+        left: (int)
+        right: (unary_operator
+          (identifier))))))
+
+===
+newCell
+===
+
+newCell 0 X
+newCell Y Z
+newCell (7 + @U) V
+
+---
+
+(source_file
+  (block
+    (newcell
+      (int)
+      (identifier))
+    (newcell
+      (identifier)
+      (identifier))
+    (newcell
+      (parenthesis
+        (binary_operator
+          left: (int)
+          right: (unary_operator
+            (identifier))))
+      (identifier))))
 
 ===
 if statement
@@ -105,7 +152,7 @@ end
       condition: (identifier)
       consequence: (in_block
         definitions: (in
-          (assignment
+          (unification
             left: (identifier)
             right: (int)))
         (block
@@ -389,7 +436,7 @@ end
       consequence: (in_block
         definitions: (in
           (identifier)
-          (assignment
+          (unification
             left: (pattern
               (record
                 label: (atom)
@@ -416,7 +463,7 @@ end
               argument: (identifier)
               body: (in_block
               (block
-                (assignment
+                (unification
                   left: (identifier)
                   right: (binary_operator
                     left: (identifier)
@@ -445,7 +492,7 @@ byNeed proc {$ R} R = X end Y
         argument: (identifier)
         body: (in_block
           (block
-            (assignment
+            (unification
               left: (identifier)
               right: (identifier)))))
       target: (identifier))))

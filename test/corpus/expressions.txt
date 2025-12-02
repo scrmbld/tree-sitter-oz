@@ -10,14 +10,14 @@ end
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (procedure_definition_expression
         argument: (identifier)
         argument: (identifier)
         body: (in_block
           (block
-          (assignment
+          (unification
           left: (identifier)
           right: (binary_operator
             left: (identifier)
@@ -35,7 +35,7 @@ end
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (function_definition_expression
         argument: (identifier)
@@ -54,7 +54,7 @@ X = (3 + 2) * Y
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (binary_operator
         left: (parenthesis
@@ -73,7 +73,7 @@ X = -1
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (unary_operator
         (int)))))
@@ -88,7 +88,7 @@ X = {Max Y Z}
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (call
         function: (identifier)
@@ -106,7 +106,7 @@ X = thread 1 + 2 end
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (thread_expression
         (in_expression
@@ -142,7 +142,7 @@ X = someLabel(1 (X + 3) {G})
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (tuple
         label: (atom)
@@ -164,7 +164,7 @@ X = [1 (X + 3) {G}]
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (list
         (int)
@@ -190,7 +190,7 @@ end
 
 (source_file
   (block
-    (assignment
+    (unification
       left: (identifier)
       right: (function_definition_expression
         body: (in_expression

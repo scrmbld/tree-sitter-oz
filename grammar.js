@@ -17,7 +17,7 @@ module.exports = grammar({
   conflicts: $ => [
     // this conflicts because they can both start with identifiers
     [$.in, $._expression],
-    // both of these can start with assignments
+    // both of these can start with unifications
     [$.in, $._statement],
     // call statements and expressions have the exact same syntax
     [$._statement, $._expression],
@@ -39,7 +39,9 @@ module.exports = grammar({
     _statement: $ => choice(
       $.skip,
       $.local_definition,
+      $.unification,
       $.assignment,
+      $.newcell,
       $.if_statement,
       $.case_statement,
       $.procedure_definition_statement,
@@ -72,7 +74,7 @@ module.exports = grammar({
       repeat(
         choice(
           $.identifier,
-          $.assignment,
+          $.unification,
           $.function_definition_statement,
           $.procedure_definition_statement
         ),
@@ -80,13 +82,25 @@ module.exports = grammar({
       "in"
     ),
 
-    assignment: $ => seq(
+    unification: $ => seq(
       field("left", choice(
         $.pattern,
         $.identifier
       )),
       "=",
       field("right", $._expression),
+    ),
+
+    assignment: $ => seq(
+      field("left", $.identifier),
+      ":=",
+      field("right", $._expression),
+    ),
+
+    newcell: $ => seq(
+      "newCell",
+      $._expression,
+      $.identifier
     ),
 
     in_block: $ => seq(
@@ -263,7 +277,7 @@ module.exports = grammar({
       "end"
     ),
 
-    binary_operator: $ => prec.left(2, seq(
+    binary_operator: $ => prec.left(1, seq(
       field("left", $._expression),
       choice(
         "==",
@@ -285,7 +299,7 @@ module.exports = grammar({
       field("right", $._expression)
     )),
 
-    record_construction_op: $ => prec.left(2, seq(
+    record_construction_op: $ => prec.left(1, seq(
       field("left", $._expression),
       choice(
         "|",
@@ -294,8 +308,11 @@ module.exports = grammar({
       field("right", $._expression)
     )),
 
-    unary_operator: $ => prec.left(1, seq(
-      "-",
+    unary_operator: $ => prec.left(2, seq(
+      choice(
+        "-",
+        "@"
+      ),
       $._expression
     )),
 
