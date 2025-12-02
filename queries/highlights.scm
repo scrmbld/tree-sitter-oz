@@ -11,12 +11,16 @@
 
 ; function/procedure definitions
 (function_definition_statement
+    name: (identifier) @function)
+(function_definition_statement
     name: (identifier) @function
     (identifier) @variable.parameter)
 
 (function_definition_expression
     (identifier) @variable.parameter)
 
+(procedure_definition_statement
+    name: (identifier) @function)
 (procedure_definition_statement
     name: (identifier) @function
     (identifier) @variable.parameter)
