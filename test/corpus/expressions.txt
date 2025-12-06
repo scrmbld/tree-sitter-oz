@@ -217,3 +217,60 @@ end
               right: (int))
             consequence: (in_expression
                 return: (int)))))))))
+
+===
+try_expression
+===
+
+fun {SafeDiv X Y}
+  try
+    if Y == 0 then
+      raise divideByZero(X) end
+      0
+    else
+      X div Y
+    end
+  catch X then
+    0
+  finally
+    skip Basic
+  end
+end
+
+---
+(source_file
+  (block
+    (function_definition_statement
+      name: (identifier)
+      argument: (identifier)
+      argument: (identifier)
+      body: (in_expression
+        return: (try_expression
+          (in_expression
+            return: (if_expression
+              condition: (binary_operator
+                left: (identifier)
+                right: (int))
+              consequence: (in_expression
+                (raise
+                  (in_expression
+                    return: (tuple
+                      label: (atom)
+                      field: (identifier))))
+                return: (int))
+              alternative: (else_expression_clause
+                consequence: (in_expression
+                  return: (binary_operator
+                    left: (identifier)
+                    right: (identifier))))))
+          (catch_expression
+            pattern: (pattern
+              (identifier))
+            consequence: (in_expression
+                return: (int)))
+          (finally
+            (in_block
+              (block
+                (skip)
+            ))))))))
+

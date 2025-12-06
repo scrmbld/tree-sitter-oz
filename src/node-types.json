@@ -368,11 +368,19 @@
           "named": true
         },
         {
+          "type": "raise",
+          "named": true
+        },
+        {
           "type": "skip",
           "named": true
         },
         {
           "type": "thread",
+          "named": true
+        },
+        {
+          "type": "try",
           "named": true
         },
         {
@@ -1036,6 +1044,130 @@
     }
   },
   {
+    "type": "catch",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "catch_alternate",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "in_block",
+            "named": true
+          }
+        ]
+      },
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pattern",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "catch_alternate",
+    "named": true,
+    "fields": {
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "in_block",
+            "named": true
+          }
+        ]
+      },
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pattern",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "catch_expression",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "catch_expression_alternate",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "in_expression",
+            "named": true
+          }
+        ]
+      },
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pattern",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "catch_expression_alternate",
+    "named": true,
+    "fields": {
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "in_expression",
+            "named": true
+          }
+        ]
+      },
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pattern",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "else_clause",
     "named": true,
     "fields": {
@@ -1245,6 +1377,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "finally",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "in_block",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1661,6 +1808,10 @@
             "named": true
           },
           {
+            "type": "try_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -1712,11 +1863,19 @@
           "named": true
         },
         {
+          "type": "raise",
+          "named": true
+        },
+        {
           "type": "skip",
           "named": true
         },
         {
           "type": "thread",
+          "named": true
+        },
+        {
+          "type": "try",
           "named": true
         },
         {
@@ -1922,6 +2081,10 @@
             "named": true
           },
           {
+            "type": "try_expression",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           },
@@ -1973,11 +2136,19 @@
           "named": true
         },
         {
+          "type": "raise",
+          "named": true
+        },
+        {
           "type": "skip",
           "named": true
         },
         {
           "type": "thread",
+          "named": true
+        },
+        {
+          "type": "try",
           "named": true
         },
         {
@@ -2162,6 +2333,10 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "parenthesis",
           "named": true
         },
@@ -2171,6 +2346,10 @@
         },
         {
           "type": "record_construction_op",
+          "named": true
+        },
+        {
+          "type": "tuple",
           "named": true
         }
       ]
@@ -2236,6 +2415,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "raise",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "in_expression",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2581,6 +2775,52 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "in_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "try",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "catch",
+          "named": true
+        },
+        {
+          "type": "finally",
+          "named": true
+        },
+        {
+          "type": "in_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "try_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "catch_expression",
+          "named": true
+        },
+        {
+          "type": "finally",
+          "named": true
+        },
         {
           "type": "in_expression",
           "named": true
@@ -2988,6 +3228,10 @@
     "named": false
   },
   {
+    "type": "catch",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true
@@ -3010,6 +3254,10 @@
   },
   {
     "type": "false",
+    "named": false
+  },
+  {
+    "type": "finally",
     "named": false
   },
   {
@@ -3061,6 +3309,10 @@
     "named": false
   },
   {
+    "type": "raise",
+    "named": false
+  },
+  {
     "type": "skip",
     "named": false
   },
@@ -3074,6 +3326,10 @@
   },
   {
     "type": "true",
+    "named": false
+  },
+  {
+    "type": "try",
     "named": false
   },
   {

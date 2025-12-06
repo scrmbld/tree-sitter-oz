@@ -29,6 +29,7 @@ local X (Y|Z) = {G} in
 end
 
 ---
+
 (source_file
   (block
     (local_definition
@@ -496,3 +497,101 @@ byNeed proc {$ R} R = X end Y
               left: (identifier)
               right: (identifier)))))
       target: (identifier))))
+
+===
+raise
+===
+
+raise illFormedExpression(E) end
+
+---
+
+(source_file
+  (block
+    (raise
+      (in_expression
+        return: (tuple
+          label: (atom)
+          field: (identifier))))))
+
+===
+try -- no alternate catches
+===
+
+try
+  X = 12 / Y
+catch divideByZero(E) then
+  skip Browse E
+end
+
+---
+(source_file
+  (block
+    (try
+      (in_block
+        (block
+          (unification
+            left: (identifier)
+            right: (binary_operator
+              left: (int)
+              right: (identifier)))))
+    (catch
+      pattern: (pattern
+        (tuple
+          label: (atom)
+          field: (identifier)))
+      consequence: (in_block
+        (block
+          (skip
+            argument: (identifier))))))))
+
+===
+try -- alternate catches and finally
+===
+
+try
+  X = 12 / Y
+catch divideByZero(E) then
+  skip Browse E
+[] illFormedExp(E) then
+  skip Browse E
+finally
+  skip Browse X
+end
+
+---
+
+(source_file
+  (block
+    (try
+      (in_block
+        (block
+          (unification
+            left: (identifier)
+            right: (binary_operator
+              left: (int)
+              right: (identifier)))))
+    (catch
+      pattern: (pattern
+        (tuple
+          label: (atom)
+          field: (identifier)))
+      consequence: (in_block
+        (block
+          (skip
+            argument: (identifier))))
+      alternative: (catch_alternate
+        pattern: (pattern
+          (tuple
+            label: (atom)
+            field: (identifier)))
+        consequence:
+          (in_block
+            (block
+              (skip
+                argument: (identifier))))))
+    (finally
+      (in_block
+        (block
+          (skip
+            argument: (identifier))))))))

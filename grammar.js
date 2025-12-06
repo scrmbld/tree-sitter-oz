@@ -25,6 +25,8 @@ module.exports = grammar({
     [$.pattern, $._expression],
     // patterns can include some members of _type
     [$.pattern, $._type],
+    // patterns can appear in unification
+    [$.pattern, $.unification],
   ],
 
   rules: {
@@ -48,7 +50,9 @@ module.exports = grammar({
       $.function_definition_statement,
       $.call,
       $.thread,
-      $.by_need
+      $.by_need,
+      $.try,
+      $.raise
     ),
 
     skip: $ => seq(
@@ -165,9 +169,11 @@ module.exports = grammar({
 
     pattern: $ => choice(
       // NOTE: this includes some invalid patterns
+      $.identifier,
       $.record_construction_op,
       $.parenthesis,
       $.record,
+      $.tuple,
       $.atom,
       $.bool
     ),
@@ -221,6 +227,40 @@ module.exports = grammar({
       field("target", $.identifier)
     ),
 
+    try: $ => seq(
+      "try",
+      $.in_block,
+      $.catch,
+      optional($.finally),
+      "end"
+    ),
+
+    catch: $ => seq(
+      "catch",
+      field("pattern", $.pattern),
+      "then",
+      field("consequence", $.in_block),
+      repeat(field("alternative", $.catch_alternate)),
+    ),
+
+    catch_alternate: $ => seq(
+      "[]",
+      field("pattern", $.pattern),
+      "then",
+      field("consequence", $.in_block)
+    ),
+
+    finally: $ => seq(
+      "finally",
+      $.in_block
+    ),
+
+    raise: $ => seq(
+      "raise",
+      $.in_expression,
+      "end"
+    ),
+
     in_expression: $ => seq(
       optional(field("definitions", $.in)),
       repeat($._statement),
@@ -248,6 +288,7 @@ module.exports = grammar({
       $.local_definition_expression,
       $.if_expression,
       $.case_expression,
+      $.try_expression
     ),
 
     parenthesis: $ => prec.left(0, seq(
@@ -388,7 +429,28 @@ module.exports = grammar({
       field("consequence", $.in_expression)
     ),
 
+    try_expression: $ => seq(
+      "try",
+      $.in_expression,
+      $.catch_expression,
+      optional($.finally),
+      "end"
+    ),
 
+    catch_expression: $ => seq(
+      "catch",
+      field("pattern", $.pattern),
+      "then",
+      field("consequence", $.in_expression),
+      repeat(field("alternative", $.catch_expression_alternate)),
+    ),
+
+    catch_expression_alternate: $ => seq(
+      "[]",
+      field("pattern", $.pattern),
+      "then",
+      field("consequence", $.in_expression)
+    ),
 
     // first letter of identifier must be uppercase
     identifier: $ => /\??[A-Z]([A-Z]|[a-z]|[0-9]|_)*/,
@@ -399,7 +461,7 @@ module.exports = grammar({
       $.list,
       $._number,
       $.string,
-      $._literal
+      $._literal,
     ),
 
     record: $ => prec(0, seq(
