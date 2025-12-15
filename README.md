@@ -43,11 +43,11 @@ parser_config.oz = {
 
 4. Run `:TSInstall oz` in Neovim
 
-5. Copy highlight.scm to your runtimepath
-    1. find the location of your neovim runtime path by running `:set rtp?` in Neovim
-    2. navigate to `<rtp_directory>/lazy/nvim-treesitter/queries`
-    3. create a directory called `oz` (if it doesn't already exist)
-    4. copy `queries/highlight.scm` from your downloaded project directory to the `oz` directory that you just created
+5. Add `highlight.scm` to your configuraton
+    1. find the location of your neovim config (usually `.config/nvim`)
+        - open vim and run `:echo stdpath('config')` if you aren't sure
+    2. create `<config_directory>/queries/oz` (if it doesn't aleardy exist)
+    3. copy `queries/highlight.scm` from your downloaded project directory to the `oz` directory that you just created
 
 This should result in the following file tree:
 ```
