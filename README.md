@@ -51,12 +51,10 @@ parser_config.oz = {
 
 This should result in the following file tree:
 ```
-<rtp_directory>
-└── lazy
-    └── nvim-treesitter
-        └── queries
-            └── oz
-                └── highlights.scm
+<config_directory>
+└── queries
+    └── oz
+        └── highlights.scm
 ```
 
 At this point, if you restart neovim and open a file ending in a `.oz` extension, you should see syntax highlighting.
