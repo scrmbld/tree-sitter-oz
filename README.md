@@ -62,7 +62,7 @@ This should result in the following file tree:
 At this point, if you restart neovim and open a file ending in a `.oz` extension, you should see syntax highlighting.
 
 
-### Optional
+## Setting commentstring (Optional)
 
-In order to enable commentstring integration place the following line into .config/nvim/ftplugin/oz.lua (or wherever your nvim configuration files are)
+In order to enable commentstring integration place the following line into `<config_directory>/ftplugin/oz.lua` 
 `vim.bo.commentstring = '// %s'`
