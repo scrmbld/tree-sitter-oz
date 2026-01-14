@@ -70,6 +70,10 @@
  "andthen"
  "orelse"
  "newCell"
+ "try"
+ "catch"
+ "finally"
+ "raise"
  ] @keyword
 
 [
