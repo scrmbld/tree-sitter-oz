@@ -11,14 +11,16 @@ end
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (procedure_definition_expression
         argument: (identifier)
         argument: (identifier)
         body: (in_block
           (block
           (unification
-          left: (identifier)
+          left: (pattern
+            (identifier))
           right: (binary_operator
             left: (identifier)
             right: (int)))))))))
@@ -36,7 +38,8 @@ end
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (function_definition_expression
         argument: (identifier)
         body: (in_expression
@@ -55,7 +58,8 @@ X = (3 + 2) * Y
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (binary_operator
         left: (parenthesis
           (binary_operator
@@ -74,7 +78,8 @@ X = -1
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (unary_operator
         (int)))))
 
@@ -89,7 +94,8 @@ X = {Max Y Z}
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (call
         function: (identifier)
         arguments: (argument_list
@@ -107,7 +113,8 @@ X = thread 1 + 2 end
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (thread_expression
         (in_expression
         return: (binary_operator
@@ -128,7 +135,7 @@ fun {TestFun W}
     R = X + 1
   end
   in
-  skip Basic
+  skip
   A
 end
 
@@ -143,7 +150,8 @@ X = someLabel(1 (X + 3) {G})
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (tuple
         label: (atom)
         field: (int)
@@ -165,7 +173,8 @@ X = [1 (X + 3) {G}]
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (list
         (int)
         (parenthesis
@@ -191,7 +200,8 @@ end
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (function_definition_expression
         body: (in_expression
           return: (case_expression
@@ -233,7 +243,7 @@ fun {SafeDiv X Y}
   catch X then
     0
   finally
-    skip Basic
+    skip
   end
 end
 

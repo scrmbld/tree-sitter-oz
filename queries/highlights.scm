@@ -28,19 +28,6 @@
 (procedure_definition_expression
     (identifier) @variable.parameter)
 
-(skip
-  [
-   "Browse"
-   "Basic"
-   "Full"
-   "Store"
-   "Stack"
-   "Check"
-   ] @function)
-
-(skip
-  argument: (identifier) @variable.parameter)
-
 ; Literals
 
 [
@@ -64,9 +51,8 @@
  "local"
  "in"
  "end"
- "skip"
  "thread"
- "byNeed"
+ "lazy"
  "andthen"
  "orelse"
  "newCell"
@@ -75,6 +61,8 @@
  "finally"
  "raise"
  ] @keyword
+
+(skip) @keyword
 
 [
  "if"

@@ -70,10 +70,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "by_need"
-        },
-        {
-          "type": "SYMBOL",
           "name": "try"
         },
         {
@@ -83,55 +79,8 @@
       ]
     },
     "skip": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "skip"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "Browse"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "argument",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "identifier"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "STRING",
-              "value": "Basic"
-            },
-            {
-              "type": "STRING",
-              "value": "Stack"
-            },
-            {
-              "type": "STRING",
-              "value": "Store"
-            },
-            {
-              "type": "STRING",
-              "value": "Full"
-            },
-            {
-              "type": "STRING",
-              "value": "Check"
-            }
-          ]
-        }
-      ]
+      "type": "STRING",
+      "value": "skip"
     },
     "local_definition": {
       "type": "SEQ",
@@ -215,10 +164,6 @@
               {
                 "type": "SYMBOL",
                 "name": "pattern"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "identifier"
               }
             ]
           }
@@ -605,6 +550,18 @@
           "value": "proc"
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "lazy"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "{"
         },
@@ -651,6 +608,18 @@
         {
           "type": "STRING",
           "value": "fun"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "lazy"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -764,40 +733,6 @@
         {
           "type": "STRING",
           "value": "end"
-        }
-      ]
-    },
-    "by_need": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "byNeed"
-        },
-        {
-          "type": "FIELD",
-          "name": "function",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "function_definition_expression"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "procedure_definition_expression"
-              }
-            ]
-          }
-        },
-        {
-          "type": "FIELD",
-          "name": "target",
-          "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
-          }
         }
       ]
     },
@@ -1085,6 +1020,18 @@
           "value": "proc"
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "lazy"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "{"
         },
@@ -1127,6 +1074,18 @@
         {
           "type": "STRING",
           "value": "fun"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "lazy"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -1996,6 +1955,19 @@
             "members": [
               {
                 "type": "STRING",
+                "value": "%"
+              },
+              {
+                "type": "PATTERN",
+                "value": "(\\\\+(.|\\r?\\n)|[^\\\\\\n])*"
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
                 "value": "//"
               },
               {
@@ -2055,10 +2027,6 @@
     [
       "pattern",
       "_type"
-    ],
-    [
-      "pattern",
-      "unification"
     ]
   ],
   "precedences": [],

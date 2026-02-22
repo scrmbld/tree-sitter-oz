@@ -2,30 +2,19 @@
 skip statement
 ===
 
-skip Basic
-skip Stack
-skip Store
-skip Full
-skip Check
-
+skip
 ---
 
 (source_file
   (block
-    (skip)
-    (skip)
-    (skip)
-    (skip)
-    (skip)
-  )
-)
+    (skip)))
 
 ===
 local statement
 ===
 
 local X (Y|Z) = {G} in
-  skip Browse X
+  skip
 end
 
 ---
@@ -44,8 +33,7 @@ end
           right: (call
             function: (identifier))))
       body: (block
-        (skip
-          argument: (identifier))))))
+        (skip)))))
 
 ===
 unification
@@ -61,10 +49,12 @@ tree(left:A right:B) = T
 (source_file
   (block
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (int))
     (unification
-      left: (identifier)
+      left: (pattern
+        (identifier))
       right: (identifier))
     (unification
       left: (pattern
@@ -138,11 +128,11 @@ if statement
 ===
 
 if A then Y=1 in
-  skip Browse X
+  skip
 elseif B then
-  skip Basic
+  skip
 else
-  skip Basic
+  skip
 end
 
 ---
@@ -154,11 +144,11 @@ end
       consequence: (in_block
         definitions: (in
           (unification
-            left: (identifier)
+            left: (pattern
+              (identifier))
             right: (int)))
         (block
-          (skip
-            argument: (identifier))))
+          (skip)))
       alternative: (elseif_clause
         condition: (identifier)
         consequence: (in_block
@@ -174,11 +164,11 @@ case statement
 ===
 
 case T of tree(left:A right:B) then
-  skip Browse A
+  skip
 [] false then
-  skip Basic
+  skip
 else
-  skip Basic
+  skip
 end
 
 ---
@@ -198,8 +188,7 @@ end
             value: (identifier))))
       consequence: (in_block
         (block
-          (skip
-            argument: (identifier))))
+          (skip)))
       alternative: (case_alternate
         pattern: (pattern
           (bool))
@@ -216,9 +205,9 @@ case statement -- elseless
 ===
 
 case T of tree(left:A right:B) then
-  skip Browse A
+  skip
 [] false then
-  skip Basic
+  skip
 end
 
 ---
@@ -238,8 +227,7 @@ end
             value: (identifier))))
       consequence: (in_block
         (block
-          (skip
-            argument: (identifier))))
+          (skip)))
       alternative: (case_alternate
         pattern: (pattern
           (bool))
@@ -252,10 +240,10 @@ case statement -- andthen
 ===
 
 case Xs#Ys
-  of nil#Ys andthen Ys > 2 then skip Basic
-  [] Xs#nil then skip Basic
-  [] X|Xr andthen X =< Y then skip Basic
-else skip Basic end
+  of nil#Ys andthen Ys > 2 then skip
+  [] Xs#nil then skip
+  [] X|Xr andthen X =< Y then skip
+else skip end
 
 ---
 
@@ -305,7 +293,7 @@ procedure definition
 ===
 
 proc {Max X Y Z}
-  skip Basic
+  skip
 end
 
 ---
@@ -401,7 +389,7 @@ thread statement
 ===
 
 thread
-  skip Basic
+  skip
 end
 
 ---
@@ -426,7 +414,7 @@ if B then
     R = X + 1
   end
   in
-  skip Basic
+  skip
 end
 
 ---
@@ -465,7 +453,8 @@ end
               body: (in_block
               (block
                 (unification
-                  left: (identifier)
+                  left: (pattern
+                    (identifier))
                   right: (binary_operator
                     left: (identifier)
                     right: (int)))))))
@@ -473,30 +462,41 @@ end
             (skip))))))
 
 ===
-byNeed
+lazy
 ===
 
-byNeed fun {$} X end Y
-byNeed proc {$ R} R = X end Y
+Y = fun lazy {$} X end
+fun lazy {F} X end
+Y = proc lazy {$} skip end
+proc lazy {P} skip end
 
 ---
 
 (source_file
   (block
-    (by_need
-      function: (function_definition_expression
+    (unification
+      left: (pattern
+        (identifier))
+      right: (function_definition_expression
         body: (in_expression
-          return: (identifier)))
-      target: (identifier))
-    (by_need
-      function: (procedure_definition_expression
-        argument: (identifier)
+          return: (identifier))))
+    (function_definition_statement
+      name: (identifier)
+      body: (in_expression
+        return: (identifier)))
+    (unification
+      left: (pattern
+        (identifier))
+      right: (procedure_definition_expression
         body: (in_block
           (block
-            (unification
-              left: (identifier)
-              right: (identifier)))))
-      target: (identifier))))
+            (skip)))))
+    (procedure_definition_statement
+      name: (identifier)
+      body: (in_block
+        (block
+          (skip))))))
+
 
 ===
 raise
@@ -521,7 +521,7 @@ try -- no alternate catches
 try
   X = 12 / Y
 catch divideByZero(E) then
-  skip Browse E
+  skip
 end
 
 ---
@@ -531,7 +531,8 @@ end
       (in_block
         (block
           (unification
-            left: (identifier)
+            left: (pattern
+              (identifier))
             right: (binary_operator
               left: (int)
               right: (identifier)))))
@@ -542,8 +543,7 @@ end
           field: (identifier)))
       consequence: (in_block
         (block
-          (skip
-            argument: (identifier))))))))
+          (skip)))))))
 
 ===
 try -- alternate catches and finally
@@ -552,11 +552,11 @@ try -- alternate catches and finally
 try
   X = 12 / Y
 catch divideByZero(E) then
-  skip Browse E
+  skip
 [] illFormedExp(E) then
-  skip Browse E
+  skip
 finally
-  skip Browse X
+  skip
 end
 
 ---
@@ -567,7 +567,8 @@ end
       (in_block
         (block
           (unification
-            left: (identifier)
+            left: (pattern
+              (identifier))
             right: (binary_operator
               left: (int)
               right: (identifier)))))
@@ -578,8 +579,7 @@ end
           field: (identifier)))
       consequence: (in_block
         (block
-          (skip
-            argument: (identifier))))
+          (skip)))
       alternative: (catch_alternate
         pattern: (pattern
           (tuple
@@ -588,10 +588,8 @@ end
         consequence:
           (in_block
             (block
-              (skip
-                argument: (identifier))))))
+              (skip)))))
     (finally
       (in_block
         (block
-          (skip
-            argument: (identifier))))))))
+          (skip)))))))

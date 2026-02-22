@@ -336,10 +336,6 @@
           "named": true
         },
         {
-          "type": "by_need",
-          "named": true
-        },
-        {
           "type": "call",
           "named": true
         },
@@ -394,36 +390,6 @@
     "type": "bool",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "by_need",
-    "named": true,
-    "fields": {
-      "function": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "function_definition_expression",
-            "named": true
-          },
-          {
-            "type": "procedure_definition_expression",
-            "named": true
-          }
-        ]
-      },
-      "target": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
   },
   {
     "type": "call",
@@ -1831,10 +1797,6 @@
           "named": true
         },
         {
-          "type": "by_need",
-          "named": true
-        },
-        {
           "type": "call",
           "named": true
         },
@@ -2101,10 +2063,6 @@
       "types": [
         {
           "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "by_need",
           "named": true
         },
         {
@@ -2715,22 +2673,6 @@
     }
   },
   {
-    "type": "skip",
-    "named": true,
-    "fields": {
-      "argument": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -3010,10 +2952,6 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "pattern",
             "named": true
           }
@@ -3172,30 +3110,6 @@
     "named": false
   },
   {
-    "type": "Basic",
-    "named": false
-  },
-  {
-    "type": "Browse",
-    "named": false
-  },
-  {
-    "type": "Check",
-    "named": false
-  },
-  {
-    "type": "Full",
-    "named": false
-  },
-  {
-    "type": "Stack",
-    "named": false
-  },
-  {
-    "type": "Store",
-    "named": false
-  },
-  {
     "type": "[",
     "named": false
   },
@@ -3218,10 +3132,6 @@
   {
     "type": "atom",
     "named": true
-  },
-  {
-    "type": "byNeed",
-    "named": false
   },
   {
     "type": "case",
@@ -3285,6 +3195,10 @@
     "named": true
   },
   {
+    "type": "lazy",
+    "named": false
+  },
+  {
     "type": "local",
     "named": false
   },
@@ -3314,7 +3228,7 @@
   },
   {
     "type": "skip",
-    "named": false
+    "named": true
   },
   {
     "type": "then",

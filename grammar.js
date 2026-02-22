@@ -25,8 +25,6 @@ module.exports = grammar({
     [$.pattern, $._expression],
     // patterns can include some members of _type
     [$.pattern, $._type],
-    // patterns can appear in unification
-    [$.pattern, $.unification],
   ],
 
   rules: {
@@ -50,22 +48,11 @@ module.exports = grammar({
       $.function_definition_statement,
       $.call,
       $.thread,
-      $.by_need,
       $.try,
       $.raise
     ),
 
-    skip: $ => seq(
-      "skip",
-      choice(
-        seq("Browse", field("argument", $.identifier)),
-        "Basic",
-        "Stack",
-        "Store",
-        "Full",
-        "Check"
-      )
-    ),
+    skip: $ => "skip",
 
     local_definition: $ => seq(
       "local",
@@ -89,7 +76,6 @@ module.exports = grammar({
     unification: $ => seq(
       field("left", choice(
         $.pattern,
-        $.identifier
       )),
       "=",
       field("right", $._expression),
@@ -180,6 +166,7 @@ module.exports = grammar({
 
     procedure_definition_statement: $ => seq(
       "proc",
+      optional("lazy"),
       "{",
       field("name", $.identifier),
       field("argument", repeat($.identifier)),
@@ -190,6 +177,7 @@ module.exports = grammar({
 
     function_definition_statement: $ => seq(
       "fun",
+      optional("lazy"),
       "{",
       field("name", $.identifier),
       field("argument", repeat($.identifier)),
@@ -216,15 +204,6 @@ module.exports = grammar({
       "thread",
       field("body", $.in_block),
       "end"
-    ),
-
-    by_need: $ => seq(
-      "byNeed",
-      field("function", choice(
-        $.function_definition_expression,
-        $.procedure_definition_expression
-      )),
-      field("target", $.identifier)
     ),
 
     try: $ => seq(
@@ -300,6 +279,7 @@ module.exports = grammar({
 
     procedure_definition_expression: $ => seq(
       "proc",
+      optional("lazy"),
       "{",
       "$",
       field("argument", repeat($.identifier)),
@@ -310,6 +290,7 @@ module.exports = grammar({
 
     function_definition_expression: $ => seq(
       "fun",
+      optional("lazy"),
       "{",
       "$",
       field("argument", repeat($.identifier)),
@@ -522,6 +503,9 @@ module.exports = grammar({
 
     // https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     comment: $ => token(choice(
+      // hoz only
+      seq('%', /(\\+(.|\r?\n)|[^\\\n])*/),
+      // mozart only
       seq('//', /(\\+(.|\r?\n)|[^\\\n])*/),
       seq(
         '/*',
